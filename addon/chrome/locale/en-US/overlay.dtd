@@ -1,0 +1,8 @@
+<!ENTITY jquant.label "Your localized menuitem">
+<!ENTITY jquantContext.label "Your Menuitem">
+<!ENTITY jquantContext.accesskey "Y">
+<!ENTITY jquantToolbarButton.label "Your Toolbar Button">
+<!ENTITY jquantToolbarButton.tooltip "This is your toolbar button!">
+<!ENTITY jquantSidebar.label "Your Sidebar">
+<!ENTITY jquantToolbar.name  "example">
+<!ENTITY jquantToolbar.label "This is an example toolbar. You can hide it under View &gt; toolbars &gt; &jquantToolbar.name;">

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{98340754-A22F-4B5C-BBF5-2BF97BA2B627}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>FMRSim</AssemblyName>
+    <StartupObject>JQuant.Program</StartupObject>
+    <RootNamespace>FMRSim</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG USEFMRSIM NOTFMRSHELLMAIN WITHGUI_ WITHHTTP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>3</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>3</WarningLevel>
+    <DefineConstants>USEFMRSIM</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Abstractions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\CommadLineInterface.cs" />
+    <Compile Include="..\Mailbox.cs" />
+    <Compile Include="..\Resources.cs" />
+    <Compile Include="..\MailboxThread.cs" />
+    <Compile Include="..\Pool.cs" />
+    <Compile Include="..\Utils.cs" />
+    <Compile Include="..\IProducer.cs" />
+    <Compile Include="..\Logger.cs" />
+    <Compile Include="TaskBarLibSim.cs" />
+    <Compile Include="..\FMR\FMRShell.cs" />
+    <Compile Include="..\Forms.cs" />
+    <Compile Include="Main_SetupCommandLine.cs" />
+    <Compile Include="..\Timers.cs" />
+    <Compile Include="TaskBarLibSim_Orders.cs" />
+    <Compile Include="..\ThreadPool.cs" />
+    <Compile Include="..\Order.cs" />
+    <Compile Include="..\TA.cs" />
+    <Compile Include="..\Feed.cs" />
+    <Compile Include="..\Security.cs" />
+    <Compile Include="..\AlgorithmMachine.cs" />
+    <Compile Include="..\CyclicBuffer.cs" />
+    <Compile Include="..\PerformanceMonitor.cs" />
+    <Compile Include="..\Locks.cs" />
+    <Compile Include="..\DataValidation.cs" />
+    <Compile Include="..\MarketSimulation.cs" />
+    <Compile Include="..\MarketSimulation_Maof.cs" />
+    <Compile Include="SetupCommandLine_dbg.cs" />
+    <Compile Include="SetupCommandLine_test.cs" />
+    <Compile Include="SetupCommandLine_feed.cs" />
+    <Compile Include="SetupCommandLine_ms.cs" />
+    <Compile Include="SetupCommandLine_oper.cs" />
+    <Compile Include="SetupCommandLine_sa.cs" />
+    <Compile Include="..\Http.cs" />
+    <Compile Include="..\FMR\FMRShell_OrdersFSM_RZ.cs">
+      <Link>FMRShell_OrdersFSM_RZ.cs</Link>
+    </Compile>
+    <Compile Include="..\FMR\FMRShell_OrdersFSM.cs">
+      <Link>FMRShell_OrdersFSM.cs</Link>
+    </Compile>
+    <Compile Include="..\FMR\FMRShell_OrdersFSM_MF.cs">
+      <Link>FMRShell_OrdersFSM_MF.cs</Link>
+    </Compile>
+    <Compile Include="SetupCommandLine_box.cs" />
+    <Compile Include="..\BoxArb.cs">
+      <Link>BoxArb.cs</Link>
+    </Compile>
+    <Compile Include="..\IB\IB.cs" />
+    <Compile Include="..\IB\IBMessages.cs">
+      <Link>IBMessages.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties InternalTargetFrameworkVersion="3.5" />
+    </MonoDevelop>
+  </ProjectExtensions>
+</Project>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://jquant/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://jquant/locale/overlay.dtd">
+<overlay id="jquant-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script src="overlay.js"/>
+  <script src="ff-overlay.js"/>
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="jquant-strings" src="chrome://jquant/locale/overlay.properties"/>
+  </stringbundleset>
+
+  <menupopup id="menu_ToolsPopup">
+    <menuitem id="jquant-hello" label="&jquant.label;"
+              oncommand="jquant.onMenuItemCommand(event);"/>
+  </menupopup>
+
+  <popup id="contentAreaContextMenu">
+    <menuitem id="context-jquant" label="&jquantContext.label;"
+              accesskey="&jquantContext.accesskey;"
+              insertafter="context-stop"
+              oncommand="jquant.onMenuItemCommand(event)"/>
+  </popup>
+
+  <toolbarpalette id="BrowserToolbarPalette">
+  <toolbarbutton id="jquant-toolbar-button" class="toolbarbutton-1 chromeclass-toolbar-additional"
+    label="&jquantToolbarButton.label;" tooltiptext="&jquantToolbarButton.tooltip;"
+    oncommand="jquant.onToolbarButtonCommand()"/>
+  </toolbarpalette>
+
+
+
+</overlay>

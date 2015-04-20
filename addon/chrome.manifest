@@ -1,0 +1,7 @@
+content   jquant                 chrome/content/
+skin      jquant   classic/1.0   chrome/skin/
+locale    jquant   en-US         chrome/locale/en-US/
+
+
+overlay   chrome://browser/content/browser.xul   chrome://jquant/content/ff-overlay.xul
+style chrome://global/content/customizeToolbar.xul chrome://jquant/skin/overlay.css

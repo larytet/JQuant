@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html dir="ltr">
+<head>
+	<title>JQuant</title>
+        <link rel="stylesheet" type="text/css" href="/tundra.css"
+        />
+        <style type="text/css">
+            body, html { font-family:helvetica,arial,sans-serif; font-size:90%; }
+        </style>
+</head>
+
+<body class=" tundra ">
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.4.1/dojo/dojo.xd.js"
+    djConfig="parseOnLoad: true, isDebug: true">
+</script>
+
+<script type="text/javascript">
+
+dojo.require("dojox.timing");
+dojo.require("dojox.charting.Chart2D");
+dojo.require("dijit.MenuBar");
+dojo.require("dijit.MenuBarItem");
+dojo.require("dijit.PopupMenuBarItem");
+dojo.require("dijit.Menu");
+dojo.require("dijit.MenuItem");
+dojo.require("dijit.PopupMenuItem");
+
+var MainChart;
+var SeriesBytesIn;
+var SeriesBytesOut;
+var HttpStatLast;
+
+// send HTTP request to the server - I expecta string 
+// containing time and date
+function srvGetTime(){
+  dojo.xhrGet({
+    url:"getTime?",
+    handleAs:"text",
+    preventCache:"true",
+    load: function(data){
+      dojo.byId("clock").innerHTML = data;
+    }
+  });
+  dojo.xhrGet({
+    url:"getHttpStat?",
+    handleAs:"json",           // parse string as JSON string
+    preventCache:"true",
+    load: function(data){
+      if (!HttpStatLast) 
+      {
+         HttpStatLast = data;
+         return;
+      }
+  
+      var bytesInCur = parseInt(data.BytesIn);
+      var bytesOutCur = parseInt(data.BytesOut);
+      var bytesInPrev = parseInt(HttpStatLast.BytesIn);
+      var bytesOutPrev = parseInt(HttpStatLast.BytesOut);
+
+      UpdateHttpChart(MainChart, bytesInCur-bytesInPrev, bytesOutCur-bytesOutPrev);
+      HttpStatLast = data;
+    }
+  });
+}
+
+// start timer. Every 1s ask server for the current time and date
+function InitClock() {
+  // send getTime request and update the field ASAP
+  srvGetTime();
+
+  // 1s timer to refresh the field
+  t = new dojox.timing.Timer(1000);
+  t.onTick = srvGetTime;
+  t.start();
+}
+
+function CreateTrafficChart() {
+    SeriesBytesIn = new Array();
+    SeriesBytesOut = new Array();
+
+    var chart = new dojox.charting.Chart2D("simplechart");
+
+    chart.addPlot("default", {type: "Lines", markers: false,
+        tension:3, hAxis: "t", vAxis: "kB/s"});
+    chart.addAxis("t", {fixUpper: "major", fixLower:"minor", min: 0});
+    chart.addAxis("kB/s", {vertical: true, fixUpper: "major", min: 500});
+ 
+    HttpChartAddSeries(chart, [0], [0]);
+
+    return chart;
+};
+
+function HttpChartAddSeries(chart, seriesIn, seriesOut)
+{
+    chart.addSeries("BytesIn", seriesIn, {stroke: {color: "red", width: 2}, fill: "red"});
+    chart.addSeries("BytesOut", seriesOut, {stroke: {color: "orange", width: 2}, fill: "orange"});
+}
+
+function HttpChartRemoveSeries(chart)
+{
+    chart.removeSeries("BytesIn");
+    chart.removeSeries("BytesOut");
+}
+
+function HttpChartUpdateSeries(chart, seriesIn, seriesOut)
+{
+    chart.updateSeries("BytesIn", seriesIn);
+    chart.updateSeries("BytesOut", seriesOut);
+}
+
+function UpdateHttpChart(chart, bytesIn, bytesOut) {
+
+    SeriesBytesIn.push(bytesIn);
+    SeriesBytesOut.push(bytesOut);
+
+    while (SeriesBytesIn.length > 10) SeriesBytesIn.shift();
+    while (SeriesBytesOut.length > 10) SeriesBytesOut.shift();
+
+    // HttpChartRemoveSeries(chart);
+    HttpChartUpdateSeries(chart, SeriesBytesIn, SeriesBytesOut);
+    chart.render();
+};
+
+
+var pMenuBar;
+
+// add main menu at the top of the screen
+function InitMenu() {
+    pMenuBar = new dijit.MenuBar({});
+
+    var pSubMenu = new dijit.Menu({});
+    pSubMenu.addChild(new dijit.MenuItem({
+        label: "Status"
+    }));
+    pSubMenu.addChild(new dijit.MenuItem({
+        label: "Counters"
+    }));
+    pMenuBar.addChild(new dijit.PopupMenuBarItem({
+        label: "Info",
+        popup: pSubMenu
+    }));
+
+    var pSubMenu2 = new dijit.Menu({});
+    pSubMenu2.addChild(new dijit.MenuItem({
+        label: "Connection"
+    }));
+    pSubMenu2.addChild(new dijit.MenuItem({
+        label: "Semiautomatic"
+    }));
+    pMenuBar.addChild(new dijit.PopupMenuBarItem({
+        label: "Trade",
+        popup: pSubMenu2
+    }));
+
+    // add the menu to the top "panel"
+    pMenuBar.placeAt("toppanel");
+    // and start the whole thing
+    pMenuBar.startup();
+};
+
+function InitAll() {
+    InitClock();
+    InitMenu();
+    MainChart = CreateTrafficChart();
+}
+
+dojo.addOnLoad(InitAll);
+
+</script>
+
+
+<table border="0">
+
+<tr>
+<td><div id="toppanel"></div></td>
+</tr>
+
+<tr>
+<td height="300"><div id="centerpanel">
+  <div id="simplechart" style="width: 450px; height: 300px; margin: 5px auto 0px auto;">
+  </div>
+</div></td>
+</tr>
+
+<tr>
+<td>
+  <table border="0">
+  <tr>
+  <td width="400"></td>
+    <td><div id="bottompanel">
+       <font size='1px'><div id="clock"></div>
+          <div id="httpstat"></div>
+       </font>
+    </div></td>
+  </tr>
+</td>
+</tr>
+
+</table> 
+
+
+
+
+
+
+</body>
+</html>

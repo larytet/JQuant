@@ -1,0 +1,980 @@
+<pre>
+
+VERSION 5.00
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Begin VB.UserControl controlLogin 
+   AccessKeys      =   " "
+   BackColor       =   &H8000000E&
+   ClientHeight    =   5310
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   4380
+   ScaleHeight     =   5310
+   ScaleWidth      =   4380
+   Begin VB.ComboBox cmboLoginLevel 
+      Height          =   315
+      ItemData        =   "controlLogin.ctx":0000
+      Left            =   1320
+      List            =   "controlLogin.ctx":0010
+      Style           =   2  'Dropdown List
+      TabIndex        =   3
+      Top             =   1200
+      Width           =   1215
+   End
+   Begin VB.CheckBox chkSna 
+      Alignment       =   1  'Right Justify
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "SNA התחבר"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   177
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   2760
+      TabIndex        =   7
+      Top             =   3720
+      Width           =   1455
+   End
+   Begin VB.TextBox txtAppPass 
+      Height          =   285
+      IMEMode         =   3  'DISABLE
+      Left            =   240
+      MaxLength       =   11
+      PasswordChar    =   "*"
+      TabIndex        =   4
+      Top             =   4200
+      Visible         =   0   'False
+      Width           =   1215
+   End
+   Begin VB.TextBox txtNewPassVerify 
+      Height          =   285
+      IMEMode         =   3  'DISABLE
+      Left            =   1920
+      PasswordChar    =   "*"
+      TabIndex        =   11
+      Top             =   4800
+      Width           =   1215
+   End
+   Begin VB.TextBox txtNewPass 
+      Height          =   285
+      IMEMode         =   3  'DISABLE
+      Left            =   1920
+      PasswordChar    =   "*"
+      TabIndex        =   10
+      Top             =   4440
+      Width           =   1215
+   End
+   Begin VB.CheckBox chkChangePass 
+      Alignment       =   1  'Right Justify
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "שנה סיסמת מערכת"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   177
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   2160
+      TabIndex        =   8
+      Top             =   4080
+      Width           =   2055
+   End
+   Begin VB.CommandButton btnAdvanced 
+      Caption         =   "<< &הרחב"
+      Height          =   375
+      Left            =   120
+      TabIndex        =   6
+      Top             =   2040
+      Width           =   975
+   End
+   Begin VB.Timer tmrLogin 
+      Enabled         =   0   'False
+      Interval        =   1000
+      Left            =   1680
+      Top             =   2280
+   End
+   Begin VB.TextBox txtPassword 
+      Height          =   285
+      IMEMode         =   3  'DISABLE
+      Left            =   1320
+      MaxLength       =   11
+      PasswordChar    =   "*"
+      TabIndex        =   2
+      Top             =   840
+      Width           =   1215
+   End
+   Begin VB.TextBox txtUser 
+      Height          =   285
+      Left            =   1320
+      MaxLength       =   11
+      TabIndex        =   1
+      Top             =   480
+      Width           =   1215
+   End
+   Begin VB.TextBox txtSysName 
+      BackColor       =   &H8000000F&
+      Enabled         =   0   'False
+      Height          =   285
+      Left            =   1320
+      MaxLength       =   11
+      TabIndex        =   12
+      Top             =   120
+      Width           =   1215
+   End
+   Begin VB.CommandButton cmdOK 
+      Caption         =   "&כניסה"
+      Height          =   375
+      Left            =   2160
+      TabIndex        =   5
+      Top             =   2040
+      Width           =   975
+   End
+   Begin VB.CommandButton cmdCancel 
+      Caption         =   "&ביטול"
+      Height          =   375
+      Left            =   3240
+      TabIndex        =   9
+      Top             =   2040
+      Width           =   975
+   End
+   Begin VB.Frame Frame1 
+      BackColor       =   &H00FFFFFF&
+      Height          =   30
+      Left            =   120
+      TabIndex        =   0
+      Top             =   1560
+      Width           =   4095
+   End
+   Begin MSComctlLib.ProgressBar ProgressBar 
+      Height          =   135
+      Left            =   120
+      TabIndex        =   13
+      Top             =   1800
+      Visible         =   0   'False
+      Width           =   4095
+      _ExtentX        =   7223
+      _ExtentY        =   238
+      _Version        =   393216
+      Appearance      =   0
+      Scrolling       =   1
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "רמת כניסה"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   177
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   3120
+      RightToLeft     =   -1  'True
+      TabIndex        =   27
+      Top             =   1200
+      Width           =   1095
+   End
+   Begin VB.Label Label1 
+      Alignment       =   1  'Right Justify
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "סיסמת יישום"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   177
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Index           =   3
+      Left            =   120
+      TabIndex        =   26
+      Top             =   3960
+      Visible         =   0   'False
+      Width           =   1455
+   End
+   Begin VB.Label lbPassExp 
+      BackColor       =   &H00C0E0FF&
+      Height          =   255
+      Left            =   120
+      TabIndex        =   25
+      Top             =   3360
+      Width           =   1815
+   End
+   Begin VB.Label lbLastIp 
+      BackColor       =   &H00C0E0FF&
+      Height          =   255
+      Left            =   120
+      TabIndex        =   24
+      Top             =   3000
+      Width           =   1815
+   End
+   Begin VB.Label lbLastDateTime 
+      BackColor       =   &H00C0E0FF&
+      Height          =   255
+      Left            =   120
+      TabIndex        =   23
+      Top             =   2640
+      Width           =   1815
+   End
+   Begin VB.Label lbNewPassVerify 
+      Alignment       =   1  'Right Justify
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "אימות סיסמה"
+      Height          =   255
+      Left            =   3000
+      TabIndex        =   22
+      Top             =   4800
+      Width           =   1215
+   End
+   Begin VB.Label lbNewPass 
+      Alignment       =   1  'Right Justify
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "סיסמה חדשה"
+      Height          =   255
+      Left            =   3120
+      TabIndex        =   21
+      Top             =   4440
+      Width           =   1095
+   End
+   Begin VB.Label lbPassExpLabel 
+      Alignment       =   1  'Right Justify
+      BackColor       =   &H00FFFFFF&
+      Caption         =   " ימים לפקיעת סיסמה"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   177
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   1800
+      TabIndex        =   20
+      Top             =   3360
+      Width           =   2415
+   End
+   Begin VB.Label lbLastIpLabel 
+      Alignment       =   1  'Right Justify
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "כתובת כניסה אחרונה"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   177
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   2040
+      TabIndex        =   19
+      Top             =   3000
+      Width           =   2175
+   End
+   Begin VB.Label lbLastDateTimeLabel 
+      Alignment       =   1  'Right Justify
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "זמן כניסה אחרונה"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   177
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   2400
+      TabIndex        =   18
+      Top             =   2640
+      Width           =   1815
+   End
+   Begin VB.Shape Shape1 
+      BorderColor     =   &H0080C0FF&
+      BorderWidth     =   3
+      FillColor       =   &H0080C0FF&
+      Height          =   735
+      Left            =   120
+      Top             =   240
+      Width           =   735
+   End
+   Begin VB.Label Label1 
+      Alignment       =   1  'Right Justify
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "מערכת"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   177
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Index           =   0
+      Left            =   3240
+      TabIndex        =   17
+      Top             =   120
+      Width           =   975
+   End
+   Begin VB.Label Label1 
+      Alignment       =   1  'Right Justify
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "שם משתמש"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   177
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Index           =   1
+      Left            =   3120
+      TabIndex        =   16
+      Top             =   480
+      Width           =   1095
+   End
+   Begin VB.Shape Shape2 
+      BorderColor     =   &H00FF0000&
+      BorderWidth     =   3
+      FillColor       =   &H0080C0FF&
+      Height          =   1095
+      Left            =   240
+      Top             =   600
+      Width           =   375
+   End
+   Begin VB.Label Label1 
+      Alignment       =   1  'Right Justify
+      BackColor       =   &H00FFFFFF&
+      Caption         =   "סיסמת מערכת"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   177
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Index           =   2
+      Left            =   3000
+      TabIndex        =   15
+      Top             =   840
+      Width           =   1215
+   End
+   Begin VB.Shape Shape3 
+      BorderColor     =   &H00FFFF80&
+      BorderWidth     =   3
+      FillColor       =   &H0080C0FF&
+      Height          =   495
+      Left            =   480
+      Top             =   1440
+      Width           =   735
+   End
+   Begin VB.Label lbProgressTxt 
+      Alignment       =   1  'Right Justify
+      BackStyle       =   0  'Transparent
+      Height          =   255
+      Left            =   240
+      RightToLeft     =   -1  'True
+      TabIndex        =   14
+      Top             =   1560
+      Visible         =   0   'False
+      Width           =   3975
+   End
+End
+Attribute VB_Name = "controlLogin"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+
+'
+'  מציין אם הקונטרול במצב מצומצם או מורחב
+'
+Private Advanced As Boolean
+
+
+'
+' הערכים חייבים להתאים לערכי הלוגין של הטסקבר, למעט 19
+'
+Public Enum LoginStatusType
+    LoginStatusActive = 0
+    LoginStatusInProgress = 1
+    LoginStatusInactive = 2
+    LoginStatusDBInitFailure = 3
+    LoginStatusAS400Failure = 4
+    LoginStatusPasswordExpired = 5
+    LoginStatusPasswordChangeFailure = 6
+    LoginStatusPasswordChangedToday = 7
+    LoginStatusWrongUserOrPassword = 8
+    LoginSessionMaxUsersLimit = 9
+    LoginStatusUserCancel = 19
+End Enum
+
+''
+'' הערכים חייבים להתאים לערכי רמות הלוגין מהאיי די אל של הטסקבר
+''
+Public Enum loginLevel
+    LoginLevelPermissions = 1
+    LoginLevelOptionsStocks = 2
+    LoginLevelAccounts = 3
+    LoginLevelMax = 50
+End Enum
+
+'
+'   אובייקט יוזר בטסקבר
+'
+Private TaskBarUser As Object
+
+
+'
+' אובייקט קונפיג בטסקבר
+'
+Private TaskBarConfig As Object
+
+
+'
+' מזהה היוזר בטסקבר. יש להשתמש במזהה זה בכל פעילות
+' הקשורה באובייקט יוזר                           י
+Public sessionId As Long
+
+Private reqLevel As loginLevel
+'
+' משתנה שמייצג את המצב הנוכחי של הטסקבר
+'
+Private CurrentLoginStatus As LoginStatusType
+
+
+'
+' אירוע המופעל כשאר פעולת הכניסה מסתיימת בהצלחה
+' או בכישלון או כאשר המשתמש לוחץ על ביטול
+'
+Public Event LoginStatusEvent(st As LoginStatusType)
+
+
+'
+'  כאשר לוחצים על כפתור שמשנה את הגודל, יש להודיע על ידי אירוע
+'
+Public Event LoginResizeEvent()
+
+'
+' פרופרטי עבור המצב הנוכחי של הכניסה למערכת
+'
+Public Static Property Get LoginStatus() As LoginStatusType
+    LoginStatus = CurrentLoginStatus
+End Property
+
+
+'י
+'נקודת ההתחלה של הקונטרול                            י
+'זוהי המתודה היחידה שנקראת על יד משתמש הקונטרול      י
+'י
+Public Sub Login()
+    Dim user As String
+    Dim CurrentLoginStatus As LoginStatusType
+
+    CurrentLoginStatus = LoginStatusInactive
+    
+    ' יצירת מופע של הטסקבר
+    If CreateTaskBar = -1 Then
+        Exit Sub
+    End If
+    
+    txtSysName.Text = TaskBarConfig.System
+    txtAppPass.Text = ""
+    
+    '
+    ' בדיקת המצב הנוכחי של הטסקבר
+    '
+'    CurrentLoginStatus = TaskBar.LoginState
+'    If CurrentLoginStatus = LoginStatusInProgress Then
+'        'י
+'        'אם כבר משהו התחיל תהליך כניסה, נמשוך את המצב העדכני ונציג אותו   י
+'        'ונתחיל את הטיימר של העדכונים                                     י
+'        'י
+'        Dim percent As Long
+'        Dim currentActivity As String
+'
+'        ' קבלת מצב נוכחי
+'        Call TaskBar.GetLoginActivity(percent, currentActivity)
+'
+'        ' התחלת טיימר העידכונים
+'        Call StartLoginUpdates
+'
+'        ProgressBar.Value = percent
+'        lbProgressTxt.Caption = currentActivity
+'
+'        Exit Sub
+'
+'    ElseIf CurrentLoginStatus = LoginStatusActive Then
+'        '
+'        ' משתמש כבר נכנס למערכת. נתריע ונצא
+'        '
+'        user = TaskBar.Username
+'        MsgBox "משתמש" & vbCrLf & user & vbCrLf & "כבר נכנס למערכת", vbInformation, "מערכת בשימוש"
+'        RaiseEvent LoginStatusEvent(CurrentLoginStatus)
+'    End If
+
+    tmrLogin.Enabled = False
+End Sub
+
+
+
+Private Sub btnAdvanced_Click()
+    If Advanced = False Then
+        Advanced = True
+        btnAdvanced.Caption = ">> &צמצם"
+    
+        ' שימוש במיקום של הבקרים הנמוכים ביותר, במצב מורחב, כדי לעדכן את שטח הבקר
+        If chkChangePass.Value = 1 Then
+            Height = txtNewPassVerify.Top + txtNewPassVerify.Height + 100
+        Else
+            Height = chkChangePass.Top + chkChangePass.Height + 100
+        End If
+    Else
+        Advanced = False
+        btnAdvanced.Caption = "<< &הרחב"
+    
+        ' שימוש במיקום של הבקרים הנמוכים ביותר, במצב מצומצם, כדי לעדכן את שטח הבקר
+        Height = cmdOK.Top + cmdOK.Height + 100
+    End If
+End Sub
+
+Private Sub chkChangePass_Click()
+    If chkChangePass.Value = 1 Then
+        txtNewPass.Enabled = True
+        txtNewPassVerify.Enabled = True
+        lbNewPass.Enabled = True
+        lbNewPassVerify.Enabled = True
+        txtNewPass.SetFocus
+        
+        ' שימוש במיקום של הבקרים הנמוכים ביותר, במצב מורחב, כדי לעדכן את שטח הבקר
+        Height = txtNewPassVerify.Top + txtNewPassVerify.Height + 100
+    Else
+        txtNewPass.Enabled = False
+        txtNewPassVerify.Enabled = False
+        lbNewPass.Enabled = False
+        lbNewPassVerify.Enabled = False
+    
+        ' שימוש במיקום של הבקרים הנמוכים ביותר, במצב מורחב, כדי לעדכן את שטח הבקר
+        Height = chkChangePass.Top + chkChangePass.Height + 100
+    End If
+End Sub
+
+Private Sub chkSna_Click()
+    If chkSna.Value = 1 Then
+        txtAppPass.Text = "SNA_CONNECT"
+    Else
+        txtAppPass.Text = ""
+    End If
+End Sub
+
+
+Private Sub cmboLoginLevel_KeyPress(KeyAscii As Integer)
+    If KeyAscii = 13 Then
+        Call cmdOK_Click
+    End If
+End Sub
+
+Private Sub cmdCancel_Click()
+    CurrentLoginStatus = LoginStatusUserCancel
+    RaiseEvent LoginStatusEvent(CurrentLoginStatus)
+End Sub
+
+Private Sub cmdOK_Click()
+
+    Dim ret As Long
+    Dim errMsg As String
+    Dim cust As String
+    
+    If txtUser.Text = "" Then
+        MsgBox "יש להקיש שם משתמש", vbExclamation + vbMsgBoxRight
+        txtUser.SetFocus
+        Exit Sub
+    End If
+    If txtPassword.Text = "" Then
+        MsgBox "יש להקיש סיסמת מערכת", vbExclamation + vbMsgBoxRight
+        txtPassword.SetFocus
+        Exit Sub
+    End If
+'    If txtAppPass.Text = "" Then
+'        MsgBox "יש להקיש סיסמת יישום", vbExclamation + vbMsgBoxRight
+'        txtAppPass.SetFocus
+'        Exit Sub
+'    End If
+    
+    If cmboLoginLevel.ListIndex = -1 Then
+        MsgBox "יש לבחור רמת כניסה"
+        cmboLoginLevel.SetFocus
+        cmboLoginLevel.ListIndex = 0
+        Exit Sub
+    ElseIf cmboLoginLevel.ListIndex = 0 Then
+        reqLevel = LoginLevelPermissions
+    ElseIf cmboLoginLevel.ListIndex = 1 Then
+        reqLevel = LoginLevelOptionsStocks
+    ElseIf cmboLoginLevel.ListIndex = 2 Then
+        reqLevel = LoginLevelAccounts
+    ElseIf cmboLoginLevel.ListIndex = 3 Then
+        reqLevel = LoginLevelMax
+    Else
+        reqLevel = LoginLevelMax
+    End If
+
+    ' בדיקת סיסמה חדשה
+    If chkChangePass.Value = 1 Then
+        If txtNewPass.Text = "" Then
+            MsgBox "יש להקיש סיסמה חדשה", vbMsgBoxRight
+            If Advanced = False Then
+                Call btnAdvanced_Click
+            End If
+            txtNewPass.SetFocus
+            Exit Sub
+        End If
+        If txtNewPassVerify.Text = "" Then
+            MsgBox "יש להקיש אימות סיסמה חדשה", vbMsgBoxRight
+            If Advanced = False Then
+                Call btnAdvanced_Click
+            End If
+            txtNewPassVerify.SetFocus
+            Exit Sub
+        End If
+        If txtNewPass.Text <> txtNewPassVerify.Text Then
+            MsgBox ".סיסמאות חדשות אינן תואמות. יש להקיש בשנית", vbExclamation + vbMsgBoxRight
+            If Advanced = False Then
+                Call btnAdvanced_Click
+            End If
+            txtNewPass.SetFocus
+            Exit Sub
+        End If
+    End If
+    
+    cust = TaskBarConfig.cust
+   
+    '
+    ' ביצוע פעולת הכניסה. הפעולה היא אסינכרונית ולכן נתחיל טיימר
+    ' שיידגום מיידי פעם את הטסקבר ויחכה לסיום פעולת הכניסה
+    '
+    If chkChangePass.Value = 0 Then
+        ret = TaskBarUser.LoginByLevel( _
+            txtUser.Text, _
+            txtPassword.Text, _
+            "", _
+            txtSysName.Text, _
+            CInt(cust), _
+            reqLevel, _
+            errMsg, _
+            sessionId _
+            )
+    Else
+        ret = TaskBarUser.LoginByLevelAndChangePassword( _
+            txtUser.Text, _
+            txtPassword.Text, _
+            txtNewPass.Text, _
+            "", _
+            txtSysName.Text, _
+            CInt(cust), _
+            reqLevel, _
+            errMsg, _
+            sessionId _
+            )
+    End If
+    
+    If ret = -1 Then
+        MsgBox "כישלון בכניסה למערכת:" & vbCrLf & errMsg, vbCritical + vbMsgBoxRight
+        txtUser.Enabled = True
+        txtPassword.Enabled = True
+        cmdOK.Enabled = True
+        cmdCancel.Enabled = True
+        cmboLoginLevel.Enabled = True
+        Screen.MousePointer = vbNormal
+        Exit Sub
+    End If
+
+    ' הפעלת הטיימר
+    Call StartLoginUpdates
+End Sub
+
+
+Private Sub tmrLogin_Timer()
+    Dim percent As Long
+    Dim currentActivity As String
+    Dim MsgBoxTitle As String
+
+    CurrentLoginStatus = TaskBarUser.LoginStateByLevel(sessionId, reqLevel)
+    
+    If lbLastDateTime.Caption = "" Then
+        lbLastDateTime.Caption = TaskBarUser.LastLoginDateTime(sessionId)
+        If lbLastDateTime.Caption <> "" Then
+            lbLastIp.Caption = TaskBarUser.LastLoginAddress(sessionId)
+            lbPassExp.Caption = TaskBarUser.PasswordDays(sessionId)
+        End If
+    End If
+    
+    
+    MsgBoxTitle = "כניסה למערכת"
+    
+    '=============================================
+    '   טיפול במצבים שונים במהלך הכניסה למערכת
+    '=============================================
+    
+    If CurrentLoginStatus = LoginStatusPasswordExpired Then
+        '
+        ' משתמש חייב לשנות סיסמה, אחרת לא יוכל להיכנס
+        '
+        MsgBox ".תוקף הסיסמה פג. יש לשנות סיסמה", vbExclamation + vbMsgBoxRight, MsgBoxTitle
+        Call StopLoginUpdates
+        If Advanced = False Then
+            Call btnAdvanced_Click
+        End If
+        Exit Sub
+    
+    ElseIf CurrentLoginStatus = LoginStatusPasswordChangeFailure Then
+        '
+        '   שינוי סיסמה נכשל
+        '
+        Dim errMsg As String
+        errMsg = TaskBarUser.LoginErrorDescByLevel(sessionId, reqLevel)
+        Trim (errMsg)
+        errMsg = "שינוי סיסמה נכשל. " & errMsg
+        MsgBox errMsg, vbExclamation + vbMsgBoxRight, MsgBoxTitle
+        Call StopLoginUpdates
+        If Advanced = False Then
+            Call btnAdvanced_Click
+        End If
+        Exit Sub
+    
+    ElseIf CurrentLoginStatus = LoginStatusPasswordChangedToday Then
+        '
+        ' סיסמה לא חוקית משום שסיסמה זו שונתה לאחרונה
+        '
+        MsgBox "כשלון בכניסה למערכת. הסיסמה שונתה לאחרונה", vbCritical + vbMsgBoxRight, MsgBoxTitle
+        RaiseEvent LoginStatusEvent(CurrentLoginStatus)
+        tmrLogin.Enabled = False
+    
+    ElseIf CurrentLoginStatus = LoginStatusInProgress Then
+        'י
+        'במהלך הכניסה, זהו המצב הנורמלי             י
+        'לפיכך, נעדכן את הבקרים המציגים את המצב     י
+        'י
+        Call TaskBarUser.GetLoginActivity(sessionId, percent, currentActivity)
+        ProgressBar.Value = percent
+        lbProgressTxt.Caption = currentActivity
+    
+    ElseIf CurrentLoginStatus = LoginStatusActive Then
+        '
+        ' מצב נורמלי של כניסה מוצלחת
+        '
+        Call TaskBarUser.GetLoginActivity(sessionId, percent, currentActivity)
+        ProgressBar.Value = percent
+        lbProgressTxt.Caption = currentActivity
+        RaiseEvent LoginStatusEvent(CurrentLoginStatus)
+        tmrLogin.Enabled = False
+        cmdOK.Enabled = True
+        
+    ElseIf CurrentLoginStatus = LoginStatusWrongUserOrPassword Then
+        '
+        ' שם או סיסמה שגויים
+        '
+        Dim err As String
+        err = TaskBarUser.LoginErrorDescByLevel(sessionId, reqLevel)
+        MsgBox err, vbCritical + vbMsgBoxRight, MsgBoxTitle
+        Call StopLoginUpdates
+        txtUser.SetFocus
+        Exit Sub
+        
+    ElseIf CurrentLoginStatus <> LoginStatusActive Then
+        '
+        ' כל מצב אחר מהווה כשלון בכניסה
+        '
+        err = TaskBarUser.LoginErrorDescByLevel(sessionId, reqLevel)
+        MsgBox "כישלון בכניסה למערכת" & vbCrLf & err, vbCritical + vbMsgBoxRight, MsgBoxTitle
+        RaiseEvent LoginStatusEvent(CurrentLoginStatus)
+        Call StopLoginUpdates
+        tmrLogin.Enabled = False
+    End If
+End Sub
+
+
+Private Sub StartLoginUpdates()
+
+    '
+    ' start update timer
+    '
+    tmrLogin.Interval = 500
+    tmrLogin.Enabled = True
+
+    '
+    'disable gui control
+    '
+    txtUser.Enabled = False
+    txtPassword.Enabled = False
+    txtAppPass.Enabled = False
+    cmdOK.Enabled = False
+    cmdCancel.Enabled = False
+    chkChangePass.Enabled = False
+    chkSna.Enabled = False
+    txtNewPass.Enabled = False
+    txtNewPassVerify.Enabled = False
+    cmboLoginLevel.Enabled = False
+    
+
+    '
+    ' show progress bar and description label
+    '
+    lbProgressTxt.Visible = True
+    ProgressBar.Visible = True
+    ProgressBar.Value = 0
+    
+End Sub
+
+Private Sub StopLoginUpdates()
+
+    tmrLogin.Enabled = False
+
+    txtUser.Enabled = True
+    txtPassword.Enabled = True
+    txtAppPass.Enabled = True
+    cmdOK.Enabled = True
+    cmdCancel.Enabled = True
+    chkChangePass.Enabled = True
+    chkSna.Enabled = True
+    txtNewPass.Enabled = True
+    txtNewPassVerify.Enabled = True
+    cmboLoginLevel.Enabled = True
+
+    lbProgressTxt.Visible = False
+    ProgressBar.Visible = False
+    ProgressBar.Value = 0
+    
+End Sub
+
+
+Private Sub txtAppPass_GotFocus()
+    txtAppPass.SelStart = 0
+    txtAppPass.SelLength = Len(txtAppPass.Text)
+End Sub
+
+Private Sub txtPassword_GotFocus()
+    txtPassword.SelStart = 0
+    txtPassword.SelLength = Len(txtPassword.Text)
+End Sub
+
+Private Sub txtPassword_KeyPress(KeyAscii As Integer)
+    If KeyAscii = 13 Then
+        Call cmdOK_Click
+    End If
+End Sub
+
+Private Sub txtAppPass_KeyPress(KeyAscii As Integer)
+    If KeyAscii = 13 Then
+        Call cmdOK_Click
+    End If
+End Sub
+
+Private Sub txtUser_GotFocus()
+    txtUser.SelStart = 0
+    txtUser.SelLength = Len(txtUser.Text)
+End Sub
+
+Private Sub txtUser_KeyPress(KeyAscii As Integer)
+    If KeyAscii = 13 Then
+        Call cmdOK_Click
+    End If
+End Sub
+
+Private Sub txtNewPass_KeyPress(KeyAscii As Integer)
+    If KeyAscii = 13 Then
+        Call cmdOK_Click
+    End If
+End Sub
+
+Private Sub txtNewPassVerify_KeyPress(KeyAscii As Integer)
+    If KeyAscii = 13 Then
+        Call cmdOK_Click
+    End If
+End Sub
+
+Private Sub UserControl_Resize()
+    RaiseEvent LoginResizeEvent
+End Sub
+
+Private Sub UserControl_Show()
+   txtNewPass.Enabled = False
+   txtNewPassVerify.Enabled = False
+   lbNewPass.Enabled = False
+   lbNewPassVerify.Enabled = False
+   chkChangePass.Value = 0
+   chkSna.Value = 0
+   cmboLoginLevel.ListIndex = 3
+    ' שימוש במיקום של הבקרים הנמוכים ביותר, במצב מצומצם, כדי לעדכן את שטח הבקר
+    Height = cmdOK.Top + cmdOK.Height + 100
+
+
+    ' יצירת מופע של הטסקבר
+    Call CreateTaskBar
+
+    If TaskBarConfig.UsesEncryption = 0 Then
+        ' המנע מלאפשר בקרים מתקדמים הנתמכים בטסקבר רק במצב מוצפן
+        btnAdvanced.Visible = False
+    End If
+    
+    txtSysName.Text = TaskBarConfig.System
+
+   ' cmboLoginLevel.AddItem "הרשאות בלבד"
+   ' cmboLoginLevel.AddItem "נתוני שוק"
+   ' cmboLoginLevel.AddItem "חשבונות"
+   ' cmboLoginLevel.AddItem "מלא"
+   ' cmboLoginLevel.RightToLeft = True
+    
+End Sub
+
+
+Private Function CreateTaskBar()
+    If TaskBarUser Is Nothing Then
+        Set TaskBarUser = CreateObject("TaskBarService.User")
+    End If
+    If TaskBarUser Is Nothing Then
+        MsgBox "Failed to create TaskBarUser Object", vbCritical + vbMsgBoxRight
+        CreateTaskBar = -1
+        Exit Function
+    End If
+    If TaskBarConfig Is Nothing Then
+        Set TaskBarConfig = CreateObject("TaskBarService.Config")
+    End If
+    If TaskBarConfig Is Nothing Then
+        MsgBox "Failed to create TaskBarConfig Object", vbCritical + vbMsgBoxRight
+        CreateTaskBar = -1
+        Exit Function
+    End If
+    
+    CreateTaskBar = 0
+End Function
+</pre>

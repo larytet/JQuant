@@ -1,0 +1,452 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html dir="ltr">
+<head>
+	<title>JQuant</title>
+        <link rel="stylesheet" type="text/css" href="tundra.css"
+        />
+        <style type="text/css">
+            body, html { font-family:helvetica,arial,sans-serif; font-size:90%; }
+        </style>
+        <style type="text/css">
+            @import "Grid.css"; @import "tundraGrid.css";
+            .dojoxGrid table { margin: 0; } html, body { width: 100%; height: 100%;  margin: 0; }
+        </style>
+</head>
+
+
+<script type="text/javascript" src="/dojo-release-1.5.0/dojo/dojo.js" djConfig="parseOnLoad: true, isDebug: true">
+</script>
+
+<script type="text/javascript">
+
+
+dojo.require("dojox.timing");
+dojo.require("dojox.charting.Chart2D");
+dojo.require("dijit.MenuBar");
+dojo.require("dijit.MenuBarItem");
+dojo.require("dijit.PopupMenuBarItem");
+dojo.require("dijit.Menu");
+dojo.require("dijit.MenuItem");
+dojo.require("dijit.PopupMenuItem");
+dojo.require("dijit.Dialog");
+
+dojo.require("dojo.data.ItemFileReadStore");
+dojo.require("dojo.data.ItemFileWriteStore");
+dojo.require("dojox.grid.DataGrid");
+dojo.require("dojox.data.CsvStore");
+
+
+var OptionsStore, OptionsGrid;
+var TimerGetOptions, TimerGetTime;
+var EventCounterOptionsChangedFlag;
+var DialogOptionInfo;
+
+function timerGetOptionsInit()
+{
+    TimerGetOptions = new dojox.timing.Timer(1000);
+    TimerGetOptions.onTick = srvGetOptions;
+}
+
+function timerGetOptionsStart()
+{
+    TimerGetOptions.start();
+}
+
+function timerGetOptionsStop()
+{
+    TimerGetOptions.stop();
+}
+
+function timerGetTimeInit()
+{
+    TimerGetTime = new dojox.timing.Timer(1000);
+    TimerGetTime.onTick = srvGetTime;
+}
+
+function timerGetTimeStart()
+{
+    TimerGetTime.start();
+}
+
+function timerGetTimeStop()
+{
+    TimerGetTime.stop();
+}
+
+
+
+
+// send HTTP request to the server - I expecta string 
+// containing time and date
+function srvGetTime(){
+  // stop the timer first
+  timerGetTimeStop();
+
+  dojo.xhrGet({
+    url:"getTime?",
+    handleAs:"json",
+    preventCache:"true",
+    timeout: 2000,
+    failOk: true,
+    load: function(data){
+      var timeStr = data.day+'/'+data.month+'/'+data.year+' ';
+      if (data.hour < 10) timeStr += '0'+data.hour;
+      else timeStr += data.hour;
+      timeStr += ':';
+      if (data.minute < 10) timeStr += '0'+data.minute;
+      else timeStr += data.minute;
+      timeStr += ':';
+      if (data.second < 10) timeStr += '0'+data.second;
+      else timeStr += data.second;
+
+      dojo.byId("clock").innerHTML = timeStr;
+      dojo.byId("maof").innerHTML = 'Maof='+data.maof;
+      var optionsChanged = data.optionsChanged;
+      if (EventCounterOptionsChangedFlag != optionsChanged)
+      {
+         // console.log('EventCounterOptionsChangedFlag='+EventCounterOptionsChangedFlag +',optionsChanged='+optionsChanged);
+         timerGetOptionsStart();
+         EventCounterOptionsChangedFlag = optionsChanged;
+      }
+    },
+    handle: function(response) {  // no matter what (error or Ok) I want to start the timer
+       timerGetTimeStart();
+    } 
+  });
+}
+
+// send HTTP request - get list of options
+function srvGetOptions(){
+  // stop the timer first - I will restart the timer after I processed the data
+  timerGetOptionsStop();
+
+  // send GetOptions request to the server
+  dojo.xhrGet({
+    url:"getOptions?",
+    handleAs:"json",
+    preventCache:"true",
+    timeout: 2000,
+    failOk: true,
+    load: function(data){
+       // set data in the OptionsStore       
+       var items = data.items;
+
+       for (var i = 0;i < items.length;i++)
+       {
+          var option = items[i];
+          // console.log(option);
+          var optionStrike = option.optionStrike;
+
+          // add a strike to the storage
+          // fetch() will call UpdateOptionsStore() for item with the specified strike
+          // for every strike there is only one entry in the OptionsStore 
+          OptionsStore.fetch({
+              query: {Strike: optionStrike}, 
+              onComplete: UpdateOptionsStore, // call UpdateOptionsStore() with the list of items for this strike
+              option: option,  // forward the option itself to the UpdateOptionsStore()
+          });
+       }
+    },
+    error: function(response) {  // try again if error
+       timerGetOptionsStart();
+    } 
+  });
+}
+
+function optionsGridClick(event)
+{
+
+    var rowIndex = event.rowIndex;
+    if (!rowIndex) return;
+
+    // this is ugly patch - I want to get an item from the data store quickly
+    var itemsArray = OptionsStore._getItemsArray();
+    if (!itemsArray) return;
+    if (itemsArray.length <= rowIndex) return;
+
+    var item = itemsArray[rowIndex];
+    if (!item) return;
+
+    var optionStrike = OptionsStore.getValue(item, "Strike");
+    var putID = OptionsStore.getValue(item, "PutID");
+    var putAsk = OptionsStore.getValue(item, "PutAsk");
+    var putBid = OptionsStore.getValue(item, "PutBid");
+    var callID = OptionsStore.getValue(item, "CallID");
+    var callAsk = OptionsStore.getValue(item, "CallAsk");
+    var callBid = OptionsStore.getValue(item, "CallBid");
+
+    var s = '<table><tr>';
+    s += '<td colspan="2">Strike='+optionStrike+'</td></tr>';
+    s += '<tr><td>Put</td><td>Call</td></tr>';
+    s += '<tr><td>'+putID+'</td><td>'+callID+'</td></tr>';
+    s += '<tr><td>'+putAsk+'</td><td>'+callAsk+'</td></tr>';
+    s += '<tr><td>'+putBid+'</td><td>'+putAsk+'</td></tr>';
+
+    DialogOptionInfo.attr("content", s);
+    DialogOptionInfo.show();
+
+};
+
+
+
+// Callback of fecth() called from "getOptions" request handler
+function UpdateOptionsStore(items, request) {
+
+   // get the option
+   var option = request.option;
+   // and the option attributes 
+   var optionStrike = option.optionStrike;
+   var optionId = option.optionId;
+   var pendingOrder = option.pendingOrder;
+   var bestAsk = option.ask.items[0].price;
+   var bestBid = option.bid.items[0].price;;
+   var isPut = option.isPut;
+
+   // new item or item to update
+   var item;
+   
+   // default background color is white
+   var backgroundColor  = '#FFF';  
+
+   // console.log('Strike='+optionStrike+',optionId='+optionId+',bestAsk='+bestAsk+',bestBid='+bestBid+',isPut='+isPut);
+   // console.log();
+
+   var pendingOrderLabel = pendingOrder;
+   var pendingOrderEmpty = '--';
+   if (pendingOrderLabel == '0') pendingOrderLabel = pendingOrderEmpty;
+
+   if (items.length > 0) // I have this strike already in the store - update the fields 
+   {
+      //console.log(items);
+      //console.log(request);
+      // console.log('Update option '+optionId+',strike='+optionStrike+',isPut='+isPut);
+      item = items[0];
+      if (isPut == '1')
+      {
+        if (item.PutID != optionId) OptionsStore.setValue(item, "PutID", optionId);
+        if (item.PutAsk != bestAsk) OptionsStore.setValue(item, "PutAsk", bestAsk);
+        if (item.PutBid != bestBid) OptionsStore.setValue(item, "PutBid", bestBid);
+        if (item.PutPO != pendingOrderLabel) OptionsStore.setValue(item, "PutPO", pendingOrderLabel);
+      }
+      else
+      {
+        if (item.CallID != optionId) OptionsStore.setValue(item, "CallID", optionId);
+        if (item.CallAsk != bestAsk) OptionsStore.setValue(item, "CallAsk", bestAsk);
+        if (item.CallBid != bestBid) OptionsStore.setValue(item, "CallBid", bestBid);
+        if (item.CallPO != pendingOrderLabel) OptionsStore.setValue(item, "CallPO", pendingOrderLabel);
+      }
+   }
+   else // this is a new strike - add entry to the OptionsStore
+   {
+      // console.log('Add option '+optionId+',strike='+optionStrike+',isPut='+isPut);
+      // this is ugly patch - I did not find any other way to get number of items in the data store
+      var optionsStoreSize = OptionsStore._getItemsArray().length;
+
+      // create new item
+      item = {
+          PutID: optionId,
+          PutPO: pendingOrder,
+          PutAsk: bestAsk,
+          PutBid: bestBid,
+          Strike: optionStrike,
+          CallAsk: bestAsk,
+          CallBid: bestBid,
+          CallPO: pendingOrder,
+          CallID: optionId,
+          gridLine: optionsStoreSize
+      };
+      // set empty field for the option which I did not get this time
+      // may be I will get the missing option for this strike with 
+      // the next update
+      if (isPut == '1')
+      {
+         item.CallID = '';
+         item.CallAsk = '';
+         item.CallBid = '';
+         item.CallPO = '';
+      }
+      else
+      {
+         item.PutID = '';
+         item.PutAsk = '';
+         item.PutBid = '';
+         item.PutPO = '';
+      }
+     
+      OptionsStore.newItem(item);
+   }  
+
+   // get row in the grid
+   var rowIdx = item.gridLine; 
+
+   if ((item.CallPO != pendingOrderEmpty) || (item.PutPO != pendingOrderEmpty)) {
+      backgroundColor = '#0EF';
+   }
+
+   // update color of the background if pending order
+   var rowNode = OptionsGrid.getRowNode(rowIdx);
+   if (rowNode)
+   {
+     rowNode.style.backgroundColor = backgroundColor;
+   }
+};
+
+
+
+var pMenuBar;
+
+// add main menu at the top of the screen
+function InitMenu() {
+    pMenuBar = new dijit.MenuBar({});
+
+    pMenuBar.addChild(new dijit.MenuBarItem({
+        label: "Info",
+    }));
+
+
+    // add the menu to the top "panel"
+    pMenuBar.placeAt("toppanel");
+    // and start the whole thing
+    pMenuBar.startup();
+};
+
+
+function InitGrid()  {
+
+    var OptionsData1 = {
+            identifier: 'options', 
+            items:[
+                 {PutID:'0', PutPO:'0', PutAsk:'0',PutBid:'0',Strike:'0',CallAsk:'0',CallBid:'0',CallPO:'0',CallID:'0', gridLine:'0'}
+            ]
+    };
+
+    var OptionsData = {
+            items:[]
+    };
+
+    console.log('Setting initial options store ... ');
+    // Data store 
+    OptionsStore = new dojo.data.ItemFileWriteStore({data: OptionsData});
+    console.log('done');
+    var colWidth = '11.11%';
+
+    // set the layout structure:
+    var OptionsGridLayout = [{
+      defaultCell: { styles: 'text-align:right;'  },      
+      rows:[
+        {	field: 'PutID',		name: 'ID',			width: colWidth		},
+        {	field: 'PutPO',		name: 'Order',		width: colWidth		},
+        {	field: 'PutAsk',	name: 'Ask',		width: colWidth		},
+        {	field: 'PutBid',	name: 'Bid',		width: colWidth		},
+        {	field: 'Strike',	name: 'Strike',		width: colWidth		},
+        {	field: 'CallAsk',	name: 'Ask',		width: colWidth		},
+        {	field: 'CallBid',	name: 'Bid',		width: colWidth		},
+        {	field: 'CallPO',	name: 'Order',		width: colWidth		},
+        {	field: 'CallID',	name: 'ID',			width: colWidth		}
+      ]
+    }];
+
+    // create a new grid:
+    OptionsGrid = new dojox.grid.DataGrid({
+        query: {
+            Strike: '*'
+        },
+        store: OptionsStore,
+        clientSort: true,
+        rowSelector: '20px',
+        structure: OptionsGridLayout
+    },
+    document.createElement('div'));
+
+    // append the new grid to the div "gridContainer4":
+    dojo.byId("gridContainer4").appendChild(OptionsGrid.domNode);
+
+    console.log('Start grid ... ');
+    // Call startup, in order to render the grid:
+    OptionsGrid.startup();
+    console.log('done');
+
+    // Server increments counter every time there is a change in the options list
+    // I compare the counter I get from the server with the one I keep locally and
+    // call 'getOptions' if there is a change.
+    EventCounterOptionsChangedFlag = 0;
+
+    DialogOptionInfo = new dijit.Dialog({
+                    title: "Option"
+                    //style: "width: 300px"
+                });
+
+
+    dojo.connect(DialogOptionInfo, "onHide", 
+                 function () {}
+    );
+
+    dojo.connect(DialogOptionInfo, "onClick", 
+                 function () {DialogOptionInfo.hide();}
+    );
+
+    // console.log(DialogOptionInfo);
+
+    dojo.connect(OptionsGrid, "onClick", optionsGridClick);
+
+};
+
+
+function InitAll() {
+    // Initialize timers to refresh the OptionsGrid and current server time
+    timerGetTimeInit();
+    timerGetOptionsInit();
+
+    InitMenu();
+    InitGrid();
+
+    // start main timer - getTime() request
+    timerGetTimeStart();
+    // refresh the options list very first time
+    timerGetOptionsStart();
+}
+
+
+
+dojo.addOnLoad(InitAll);
+
+</script>
+
+<body class="tundra">
+
+<table width="100%" height="100%" border="1">
+
+<tr>
+<td colspan=2><div id="toppanel"></div></td>
+</tr>
+
+<tr>
+<th width="50%">Puts</th><th width="50%">Calls</th>
+</tr>
+<tr>
+<td  colspan=2 height="85%" width="100%">
+  <div id="gridContainer4" style="width: 100%; height: 100%;"></div>
+</td>
+</tr>
+
+<tr>
+<td colspan=2>
+  <table width="100%" border="0">
+  <tr>
+     <td width="33%"><div id="filler"></div></td>
+     <td width="33%" align="center"><div id="maof"></div></td>
+     <td align="right"><div id="clock"></div></td>
+  </tr>
+</td>
+</tr>
+
+</table> 
+
+
+
+
+
+
+</body>
+</html>

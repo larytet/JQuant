@@ -1,0 +1,4106 @@
+<pre>
+// Generated .IDL file (by the OLE/COM Object Viewer)
+// 
+// typelib filename: TaskBarService.exe
+
+[
+  uuid(48C77DB1-D9E0-45B8-9992-C92B047CC700),
+  version(1.0),
+  helpstring("TaskBar 1.0 Type Library"),
+  custom(DE77BA64-517C-11D1-A2DA-0000F8773CE9, 100663657),
+  custom(DE77BA63-517C-11D1-A2DA-0000F8773CE9, 1239104181),
+  custom(DE77BA65-517C-11D1-A2DA-0000F8773CE9, Created by MIDL version 6.00.0361 at Tue Apr 07 14:36:18 2009
+)
+
+]
+library TaskBarLib
+{
+    // TLib :     // TLib : OLE Automation : {00020430-0000-0000-C000-000000000046}
+    importlib("STDOLE2.TLB");
+
+    // Forward declare all types defined in this typelib
+    interface IIShortStocks;
+    interface IUser;
+    interface IK300;
+    interface IK300Event;
+    interface IFunds;
+    interface IDirectDlv;
+    interface ITradeOptions;
+    interface IConfig;
+    dispinterface _IK300EventsEvents;
+    interface IK300Events;
+    interface IPermissions;
+    dispinterface IOnlineEventsEvents;
+    interface IOnlineEvents;
+
+    [
+      uuid(0DFE954C-5343-4717-8B93-F84E4F0F59E6),
+      helpstring("IShortStocks Class")
+    ]
+    coclass IShortStocks {
+        [default] interface IIShortStocks;
+    };
+
+    [
+      odl,
+      uuid(734AD6E7-C1D5-4A59-B3DF-9ACA7C28C5AA),
+      helpstring("IIShortStocks Interface"),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface IIShortStocks : IDispatch {
+        [id(0x00000001), helpstring("method GetSafeStock")]
+        HRESULT GetSafeStock(
+                        [in] BSTR StockID, 
+                        [in, out] SAFEARRAY(ShortStockType)* StockDetails, 
+                        [out, retval] long* ReturnCode);
+        [id(0x00000002), helpstring("method GetAllSafeShortStocks")]
+        HRESULT GetAllSafeShortStocks(
+                        [in, out] SAFEARRAY(ShortStockType)* StockDetails, 
+                        [in, optional] VARIANT* SortBy, 
+                        [in, optional] VARIANT* SortDirecton, 
+                        [out, retval] long* ReturnCode);
+    };
+
+    typedef [uuid(1D4DFB4E-5F79-4CDA-B7BE-7DDC4622540C), version(1.0), helpstring("Short Stock Structure ")]
+    struct tagShortStockType {
+        [helpstring("מספר נייר")        
+]
+        BSTR Stock;
+        [helpstring("שם נייר")        
+]
+        BSTR Name_Stock;
+        [helpstring("סוג נייר")        
+]
+        BSTR Sug;
+        [helpstring("שם נייר בפורמט רגיל")        
+]
+        BSTR Name2;
+        [helpstring("שם רגיל")        
+]
+        BSTR Symbol;
+        [helpstring("isin")        
+]
+        BSTR Isin;
+    } ShortStockType;
+
+    [
+      uuid(8ECA9C7F-387B-4D6B-9189-DB3D3656E511),
+      helpstring("User Class")
+    ]
+    coclass User {
+        [default] interface IUser;
+    };
+
+    [
+      odl,
+      uuid(1F6A77E6-EAFE-47ED-9DE5-6E96C67E632F),
+      helpstring("IUser Interface"),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface IUser : IDispatch {
+        [id(0x00000001), helpstring("message כניסה למערכת עם שם וסיסמה. במקרה של כשלון תנתן הודעה בפרמטר")]
+        HRESULT Login(
+                        [in] BSTR username, 
+                        [in] BSTR AS400Password, 
+                        [in] BSTR AppPassword, 
+                        [out] BSTR* message, 
+                        [out] long* sessionId, 
+                        [out, retval] long* retVal);
+        [id(0x00000041), helpstring("message כניסה למערכת עם שם וסיסמה בשלבים של רמות התחברות . במקרה של כשלון תנתן הודעה בפרמטר")]
+        HRESULT LoginByLevel(
+                        [in] BSTR username, 
+                        [in] BSTR AS400Password, 
+                        [in] BSTR AppPassword, 
+                        [in] BSTR sysName, 
+                        [in] int customer, 
+                        [in] LoginLevel level, 
+                        [out] BSTR* message, 
+                        [out] long* sessionId, 
+                        [out, retval] long* retVal);
+        [id(0x00000002), helpstring("message כניסה למערכת עם שם וסיסמה לשינוי. במקרה של כשלון תנתן הודעה בפרמטר")]
+        HRESULT LoginAndChangePassword(
+                        [in] BSTR username, 
+                        [in] BSTR oldAS400Password, 
+                        [in] BSTR newAS400Password, 
+                        [in] BSTR AppPassword, 
+                        [out] BSTR* message, 
+                        [out] long* sessionId, 
+                        [out, retval] long* retVal);
+        [id(0x00000042), helpstring("message כניסה למערכת עם שם, סיסמה לשינוי ורמת התחברות. במקרה של כשלון תנתן הודעה בפרמטר")]
+        HRESULT LoginByLevelAndChangePassword(
+                        [in] BSTR username, 
+                        [in] BSTR oldAS400Password, 
+                        [in] BSTR newAS400Password, 
+                        [in] BSTR AppPassword, 
+                        [in] BSTR sysName, 
+                        [in] int customer, 
+                        [in] LoginLevel req_level, 
+                        [out] BSTR* message, 
+                        [out] long* sessionId, 
+                        [out, retval] long* retVal);
+        [id(0x00000031), helpstring("יציאה מהמערכת")]
+        HRESULT Logout(
+                        [in] long sessionId, 
+                        [out, retval] long* retVal);
+        [id(0x00000021), propget, helpstring("מחזיר את השלב הנוכחי בכניסה למערכת")]
+        HRESULT LoginState(
+                        long* sessionId, 
+                        [out, retval] LoginStatus* val);
+        [id(0x00000043), helpstring("מחזיר את הסטטוס של כניסה למערכת לפי שלב רמת התחברות")]
+        HRESULT LoginStateByLevel(
+                        [in] long* sessionId, 
+                        [in] LoginLevel req_level, 
+                        [out, retval] LoginStatus* val);
+        [id(0x00000022), helpstring("נותן את אחוז העבודה שהושלם בלוגין ואת תיאור העבודה הנוכחית")]
+        HRESULT GetLoginActivity(
+                        long* sessionId, 
+                        [out] long* percent, 
+                        [out] BSTR* description);
+        [id(0x00000029), propget, helpstring("תאריך ושעת כניסת אחרונה למערכת")]
+        HRESULT LastLoginDateTime(
+                        long* sessionId, 
+                        [out, retval] BSTR* dataTime);
+        [id(0x0000002a), propget, helpstring("מספר ימים לפקיעת הסיסמה")]
+        HRESULT PasswordDays(
+                        long* sessionId, 
+                        [out, retval] long* daysToExpiary);
+        [id(0x0000002c), propget, helpstring("כתובת כניסה אחרונה למערכת")]
+        HRESULT LastLoginAddress(
+                        long* sessionId, 
+                        [out, retval] BSTR* address);
+        [id(0x0000002d), propget, helpstring("הודעת שגיאה כאשר הכניסה למערכת נכשלה")]
+        HRESULT LoginErrorDesc(
+                        long* sessionId, 
+                        [out, retval] BSTR* desc);
+        [id(0x00000044), helpstring("הודעת שגיאה כאשר הכניסה למערכת נכשלה לפי שלב רמת התחברות")]
+        HRESULT LoginErrorDescByLevel(
+                        [in] long* sessionId, 
+                        [in] LoginLevel req_level, 
+                        [out, retval] BSTR* desc);
+        [id(0x00000004), helpstring("Retrieves a summary or detailed Rezef orders and executions for the speicifed account and the specified stock number")]
+        HRESULT GetOrdersRezef(
+                        [in] long sessionId, 
+                        [in, out] SAFEARRAY(RZFINQType)* psaStrRecords, 
+                        [in, out, optional, defaultvalue("00000000")] BSTR* strLastTime, 
+                        [in, optional, defaultvalue(0)] QueryType QueryType, 
+                        [in, optional, defaultvalue("000000")] BSTR strAccount, 
+                        [in, optional, defaultvalue("000")] BSTR strBranch, 
+                        [in, optional, defaultvalue("00000000")] BSTR strStockNumber, 
+                        [out, retval] long* retVal);
+        [id(0x00000005), helpstring("Retrieves a summary or detailed Maof orders and executions for the speicifed account and the specified stock number")]
+        HRESULT GetOrdersMaof(
+                        [in] long sessionId, 
+                        [in, out] SAFEARRAY(MOFINQType)* vecStrRecords, 
+                        [in, out] BSTR* strLastTime, 
+                        [in, optional, defaultvalue(0)] QueryType qType, 
+                        [in, optional, defaultvalue("000000")] BSTR strAccount, 
+                        [in, optional, defaultvalue("000")] BSTR strBranch, 
+                        [in, optional, defaultvalue("00000000")] BSTR strOptionNumber, 
+                        [out, retval] long* retVal);
+        [id(0x00000024), helpstring("משיכת הוראות מעו''ף מהמחשב הראשי או משרתים")]
+        HRESULT GetOrdersMF(
+                        [in] long sessionId, 
+                        [out] SAFEARRAY(MOFINQType)* vecRecords, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [in, out, optional, defaultvalue("0")] BSTR* LastTime, 
+                        [out, retval] long* retVal);
+        [id(0x00000027), helpstring("משיכת הוראות רצף מהמחשב הראשי או משרתים")]
+        HRESULT GetOrdersRZ(
+                        [in] long sessionId, 
+                        [out] SAFEARRAY(RZFINQType)* vecRecords, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [in, out, optional, defaultvalue("0")] BSTR* LastTime, 
+                        [out, retval] long* retVal);
+        [id(0x00000025), helpstring("התחל זרימת נתוני הוראות וביצועים לתוך הטסקבר מהמחשב ראשי או מהשרתים. ערך מוחזר 0 מציין הצלחה")]
+        HRESULT OrdersStreamStart(
+                        [in] long sessionId, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [in] TradeType streamType, 
+                        [out, retval] long* retVal);
+        [id(0x00000026), helpstring("הפסק זרימת נתוני הוראות וביצועים לתוך הטסקבר מהמחשב ראשי או מהשרתים. ערך מוחזר 0 מציין הצלחה")]
+        HRESULT OrdersStreamStop(
+                        [in] long sessionId, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [in] TradeType streamType, 
+                        [out, retval] long* retVal);
+        [id(0x00000006), helpstring("Retrieves the type of holdings (maof or all) for the specified account or the specified stock"), helpcontext(0x000007ed)]
+        HRESULT GetHoldingsEx(
+                        [in] long sessionId, 
+                        [in] BSTR strTik, 
+                        [in] BSTR strAccount, 
+                        [in, out] SAFEARRAY(RMType)* vecStrRecords, 
+                        [in] TradeType type, 
+                        [in, optional, defaultvalue("000")] BSTR strBranch, 
+                        [in, optional, defaultvalue("00000000")] BSTR strStock, 
+                        [in, optional, defaultvalue("000000")] BSTR strMefazel, 
+                        [out, retval] long* retVal);
+        [id(0x00000007), helpstring("Retrieves the holdings for the specified account and the specified stock"), helpcontext(0x000007ed)]
+        HRESULT GetHoldings(
+                        [in] long sessionId, 
+                        [in] BSTR strTik, 
+                        [in] BSTR strAccount, 
+                        [in, out] SAFEARRAY(RMType)* vecStrRecords, 
+                        [in, optional, defaultvalue("000")] BSTR strBranch, 
+                        [in, optional, defaultvalue("00000000")] BSTR strStock, 
+                        [out, retval] long* retVal);
+        [id(0x0000000d), helpstring("Retrieves accounts based on user query")]
+        HRESULT GetAccounts(
+                        [in] long sessionId, 
+                        [in] BSTR strQuery, 
+                        [in, out] SAFEARRAY(AccountType)* psaStrRecords, 
+                        [in, out] BSTR* ErrMsg, 
+                        [out, retval] long* retVal);
+        [id(0x0000000e), helpstring(".רשימת הרשאות של המשתמש")]
+        HRESULT GetUserPermissions(
+                        [in] long sessionId, 
+                        [out] SAFEARRAY(UserPasswordType)* psaStrRecords, 
+                        [out, retval] long* retVal);
+        [id(0x0000000f), helpstring("Update a user passowrd")]
+        HRESULT UpdateUserPassword(
+                        [in] long sessionId, 
+                        [in] BSTR strOldPassword, 
+                        [in] BSTR strNewPassword, 
+                        [in] BSTR strUserNumber, 
+                        [out, retval] long* retVal);
+        [id(0x0000002e), helpstring(".מוודא סיסמה אפליקטיבית (סיסמה שנייה) עבור משתמש. ערך מוחזר 1 מציין הצלחה")]
+        HRESULT UserAuthentication(
+                        [in] long sessionId, 
+                        [in] BSTR Password, 
+                        [out, retval] long* retVal);
+        [id(0x00000010), helpstring("Send Rezef Order")]
+        HRESULT SendRezefOrder(
+                        [in] long sessionId, 
+                        [in, out] RezefBasicOrder* Order, 
+                        [in] BSTR Location, 
+                        [in] BSTR Trade_Type, 
+                        [in, out] BSTR* VBMsg, 
+                        [in, out] long* ErrNO, 
+                        [out] OrdersErrorTypes* ErrorType, 
+                        [in, out] long* OrderID, 
+                        [in] BSTR AuthUserName, 
+                        [in] BSTR AuthPassword, 
+                        [in] BSTR ReEnteredValue, 
+                        [out, retval] long* retVal);
+        [id(0x00000014), helpstring("Send Maof Order")]
+        HRESULT SendMaofOrder(
+                        [in] long sessionId, 
+                        [in, out] MaofOrderType* Order, 
+                        [in, out] BSTR* VBMsg, 
+                        [in, out] long* ErrNO, 
+                        [out] OrdersErrorTypes* ErrorType, 
+                        [in, out] long* OrderID, 
+                        [in] BSTR AuthUserName, 
+                        [in] BSTR AuthPassword, 
+                        [in] BSTR ReEnteredValue, 
+                        [in, optional, defaultvalue(0)] long SPCOrder, 
+                        [out, retval] long* retVal);
+        [id(0x00000015), helpstring("Send Maof Order")]
+        HRESULT SendMaofOrderPele(
+                        [in] long sessionId, 
+                        [in, out] SAFEARRAY(MaofOrderType)* Orders, 
+                        [in, out] BSTR* VBMsg, 
+                        [in, out] long* ErrNO, 
+                        [out] OrdersErrorTypes* ErrorType, 
+                        [in, out] long* OrderID, 
+                        [in] BSTR AuthUserName, 
+                        [in] BSTR AuthPassword, 
+                        [in] BSTR ReEnteredValue, 
+                        [in, optional, defaultvalue(0)] long SPCOrder, 
+                        [out, retval] long* retVal);
+        [id(0x00000020), helpstring("שליחת הוראות סל מעו''ף ללקוח פלא ")]
+        HRESULT SendMaofSpeedOrderPele(
+                        [in] long sessionId, 
+                        [in, out] SAFEARRAY(MaofOrderType)* Orders, 
+                        [out] long* ErrNO, 
+                        [in, optional, defaultvalue(0)] long SPCOrder, 
+                        [out, retval] long* retVal);
+        [id(0x0000001a), helpstring("חישוב בטחונות פלא")]
+        HRESULT PeleSecurities(
+                        [in] long sessionId, 
+                        [in] SAFEARRAY(MaofOrderType)* Orders, 
+                        [in, out] SAFEARRAY(PeleSecurityType)* PeleSec, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [in] BSTR Tik, 
+                        [out, retval] long* retVal);
+        [id(0x0000001b), helpstring("קבלת מסגרת עבור חשבון לפי מדד")]
+        HRESULT GetMargin(
+                        [in] long sessionId, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [in] BaseAssetTypes asset, 
+                        [out] double* Margin, 
+                        [out, retval] long* retVal);
+        [id(0x0000001c), helpstring("method SendRezefOrder2")]
+        HRESULT SendRezefOrderSpeed(
+                        [in] long sessionId, 
+                        [in, out] SAFEARRAY(RezefBasicOrder)* Orders, 
+                        [in] BSTR Location, 
+                        [in] BSTR Trade_Type, 
+                        [out, retval] long* retVal);
+        [id(0x0000001d), helpstring("מגבלת פרמיה יומית")]
+        HRESULT GetPremium(
+                        [in] long sessionId, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [in] BaseAssetTypes asset, 
+                        [out] double* premia, 
+                        [out, retval] long* retVal);
+        [id(0x0000001e), helpstring("חישוב בטחונות עבור נכסים")]
+        HRESULT CalculateSecurities(
+                        [in] long sessionId, 
+                        [in] MaofOrderType* Order, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [in] BSTR Tik, 
+                        [in, out] SAFEARRAY(AssetSecuritiesType)* psaAssets, 
+                        [out, retval] long* retVal);
+        [id(0x0000001f), helpstring("פרמטרים לבטחונות מעו''ף")]
+        HRESULT MaofOrderParams(
+                        [in] long sessionId, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [in] BaseAssetTypes asset, 
+                        [out] double* Madad, 
+                        [out] double* emzaimNezilim, 
+                        [out] double* nezilimBoker, 
+                        [out] double* regularMargin, 
+                        [out] double* peleMargin, 
+                        [out] double* regularSecurities, 
+                        [out] double* PeleSecurities, 
+                        [out] double* OrdersPremium, 
+                        [out] double* executionPermium, 
+                        [out, retval] long* retVal);
+        [id(0x00000032), helpstring("נתונים לבטחונות מעו''ף")]
+        HRESULT MaofSecuritiesParams(
+                        [in] long sessionId, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [in] BaseAssetTypes asset, 
+                        [out] double* Madad, 
+                        [out] double* emzaimNezilim, 
+                        [out] double* nezilimBoker, 
+                        [out] double* regularMargin, 
+                        [out] double* peleMargin, 
+                        [out] double* regularSecurities, 
+                        [out] double* PeleSecurities, 
+                        [out] double* OrdersPremium, 
+                        [out] double* executionPermium, 
+                        [out] double* regularSecuritiesNoQoutesKizuz, 
+                        [out] double* peleSecuritiesNoQoutesKizuz, 
+                        [out] double* worstScenarioMadad, 
+                        [out] long* worstScenarioIndex, 
+                        [out, retval] long* retVal);
+        [id(0x00000017), helpstring("Starts a background process of maof data updates for the given account"), helpcontext(0x000007dd)]
+        HRESULT StartMaofSession(
+                        [in] long sessionId, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [in] SecurityCalcType calcType, 
+                        [out, retval] long* retVal);
+        [id(0x00000018), helpstring("Stops the background process of maof data updates for the given account"), helpcontext(0x000007dd)]
+        HRESULT StopMaofSession(
+                        [in] long sessionId, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [out, retval] long* retVal);
+        [id(0x00000019), propget, helpstring("property MaofSessionActive")]
+        HRESULT MaofSessionActive(
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [out, retval] long* pVal);
+        [id(0x00000034), helpstring("Starts a background process of rezef data updates for the given account"), helpcontext(0x000007de)]
+        HRESULT StartRezefSession(
+                        [in] long sessionId, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [out, retval] long* retVal);
+        [id(0x00000035), helpstring("Stops the background process of rezef data updates for the given account"), helpcontext(0x000007de)]
+        HRESULT StopRezefSession(
+                        [in] long sessionId, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [out, retval] long* retVal);
+        [id(0x00000011), helpstring("Retrieves ShortAccounts based on user query")]
+        HRESULT GetShortAccounts(
+                        [in] long sessionId, 
+                        [in] BSTR strQuery, 
+                        [in, out] SAFEARRAY(ShortAccountType)* psaStrRecords, 
+                        [in, out] BSTR* ErrMsg, 
+                        [out, retval] long* retVal);
+        [id(0x00000012), helpstring("Encrypt Strings")]
+        HRESULT Encrypt(
+                        [in] BSTR OrgStr, 
+                        [in] BSTR EncKey, 
+                        [out] BSTR* EncStr);
+        [id(0x00000013), helpstring("Decrypt Strings")]
+        HRESULT Decrypt(
+                        [in] BSTR EncStr, 
+                        [in] BSTR EncKey, 
+                        [out] BSTR* OrgStr);
+        [id(0x00000016), helpstring("Get Online Balance")]
+        HRESULT GetOnlineRm(
+                        [in] long sessionId, 
+                        [in, out] RmOnlineTotalInfoType* RmOnlineTotalInfo, 
+                        [in, out] SAFEARRAY(RmOnlineRecordType)* psaStrRecords, 
+                        [in] BSTR bstrBranch, 
+                        [in] BSTR bstrAccount, 
+                        [in] BSTR bstrStockNumber, 
+                        [out, retval] long* retVal);
+        [id(0x00000040), helpstring("Get Online Balance")]
+        HRESULT GetOnlineRmEx(
+                        [in] long sessionId, 
+                        [in] OnlineSessionType type, 
+                        [in, out] SAFEARRAY(OnlineSessionBalance)* psaStrRecords, 
+                        [in, optional, defaultvalue(0)] long Branch, 
+                        [in, optional, defaultvalue(0)] long Account, 
+                        [in, out, optional, defaultvalue(0)] long* LastCounter, 
+                        [out, retval] long* retVal);
+        [id(0x00000008), propget, helpstring("The connection's current state"), helpcontext(0x000007d4)]
+        HRESULT State([out, retval] ConnectionState* pVal);
+        [id(0x00000009), propget, helpstring("שם המשתמש הפעיל"), helpcontext(0x000007e9)]
+        HRESULT username(
+                        [in] long sessionId, 
+                        [out, retval] BSTR* pVal);
+        [id(0x0000000b), propget, helpstring("מספר הלקוח"), helpcontext(0x000007e6)]
+        HRESULT Cust([out, retval] BSTR* pVal);
+        [id(0x0000000c), propget, helpstring("The AS/400 system where the user is registered"), helpcontext(0x000007e8)]
+        HRESULT System([out, retval] BSTR* pVal);
+        [id(0x0000002b), propget, helpstring("שם חבר בורסה")]
+        HRESULT SystemName([out, retval] BSTR* pVal);
+        [id(0x00000028), helpstring("רשימת אפליקציות המותרות למשתמש")]
+        HRESULT GetUserApp(
+                        [in] long sessionId, 
+                        [out] SAFEARRAY(BSTR)* psaStrRecords, 
+                        [in, optional, defaultvalue("")] BSTR AppName, 
+                        [out, retval] long* retVal);
+        [id(0x0000002f), helpstring("ריכוז הוראות ונתוני שוק במעו''ף")]
+        HRESULT GetMaofCnt(
+                        [in] long sessionId, 
+                        [out] SAFEARRAY(K300MaofType)* vecK300, 
+                        [out] long* vecK300Len, 
+                        [in, out] BSTR* K300LastTime, 
+                        [in] BSTR K300Bno, 
+                        [in] BaseAssetTypes strMadad, 
+                        [in] MonthType Month, 
+                        [out] SAFEARRAY(MOFINQType)* vecOrders, 
+                        [out] long* vecOrdersLen, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [in, out] BSTR* LastTime, 
+                        [out, retval] long* retVal);
+        [id(0x00000030), helpstring("ריכוז הוראות ונתוני שוק ברצף")]
+        HRESULT GetRezefCnt(
+                        [in] long sessionId, 
+                        [out] SAFEARRAY(K300RzfType)* vecK300, 
+                        [out] long* vecK300Len, 
+                        [in, out] BSTR* K300LastTime, 
+                        [in] BSTR K300Bno, 
+                        [in] BaseAssetTypes strMadad, 
+                        [in] MonthType Month, 
+                        [out] SAFEARRAY(RZFINQType)* vecOrders, 
+                        [out] long* vecOrdersLen, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [in, out] BSTR* LastTime, 
+                        [out, retval] long* retVal);
+        [id(0x00000033), helpstring("שליחת הוראת ספיד אסינכרונית, ללא המתנה לתשובת קליטה")]
+        HRESULT SendMaofAsynchSpeedOrder(
+                        [in] long sessionId, 
+                        [in, out] SAFEARRAY(MaofOrderType)* Orders, 
+                        [out] long* ErrNO, 
+                        [in, optional, defaultvalue(0)] long SPCOrder, 
+                        [out, retval] long* retVal);
+        [id(0x00000036), helpstring("שליחת הוראה ברצף")]
+        HRESULT SendOrderRZ(
+                        [in] long sessionId, 
+                        [in] RezefSimpleOrder* Order, 
+                        [in, out] int* AsmachtaFmr, 
+                        [in] int AsmachtaRezef, 
+                        [out] BSTR* VBMsg, 
+                        [out] long* ErrNO, 
+                        [out] OrdersErrorTypes* ErrorType, 
+                        [in, out] long* OrderID, 
+                        [in] BSTR AuthUserName, 
+                        [in] BSTR AuthPassword, 
+                        [in] BSTR ReEnteredValue, 
+                        [out, retval] long* retVal);
+        [id(0x0000003a), helpstring("שליחת הוראה מתמשכת")]
+        HRESULT SendContOrderRZ(
+                        [in] long sessionId, 
+                        [in, out] RezefContinuousOrder* Order, 
+                        [in, out] int* AsmachtaFmr, 
+                        [in] int AsmachtaRezef, 
+                        [out] BSTR* VBMsg, 
+                        [out] long* ErrNO, 
+                        [out] OrdersErrorTypes* ErrorType, 
+                        [in, out] long* OrderID, 
+                        [in] BSTR AuthUserName, 
+                        [in] BSTR AuthPassword, 
+                        [in] BSTR ReEnteredValue, 
+                        [out, retval] long* retVal);
+        [id(0x0000003b), helpstring("שליחת הוראת רצף speed")]
+        HRESULT SendOrderSpeedRZ(
+                        [in] long sessionId, 
+                        [in, out] SAFEARRAY(RezefBasicOrder)* Orders, 
+                        [in] BSTR Location, 
+                        [in] BSTR Trade_Type, 
+                        [in, out] long* ErrNO, 
+                        [out, retval] long* retVal);
+        [id(0x00000037), helpstring("איתחול תהליך רקע שליפת יתרות און-ליין למשתמש")]
+        HRESULT StartOnlineUserSession(
+                        [in] long sessionId, 
+                        [in] OnlineSessionType type, 
+                        [out, retval] long* retVal);
+        [id(0x00000038), helpstring("סיום תהליך רקע שליפת יתרות און-ליין למשתמש")]
+        HRESULT StopOnlineUserSession(
+                        [in] long sessionId, 
+                        [in] OnlineSessionType type, 
+                        [out, retval] long* retVal);
+        [id(0x00000039), helpstring("משיכת יתרות און-ליין למשתמש מהמחשב הראשי")]
+        HRESULT GetOnlineSessionBalance(
+                        [in] long sessionId, 
+                        [in] OnlineSessionType type, 
+                        [in, out] SAFEARRAY(OnlineSessionBalance)* psaStrRecords, 
+                        [in, optional, defaultvalue(0)] long Branch, 
+                        [in, optional, defaultvalue(0)] long Account, 
+                        [in, out, optional, defaultvalue(0)] long* LastCounter, 
+                        [out, retval] long* retVal);
+        [id(0x0000003c), helpstring("שליפת תשואה יומית: מידע ראשוני")]
+        HRESULT GetAccountYieldInitial(
+                        [in] long sessionId, 
+                        [in, out] SAFEARRAY(AccountYieldInitial)* psaStrRecords, 
+                        [in, optional, defaultvalue(0)] long Branch, 
+                        [in, optional, defaultvalue(0)] long Account, 
+                        [in, optional, defaultvalue(0)] long AccountYieldOnly, 
+                        [out, retval] long* retVal);
+        [id(0x0000003d), helpstring("שליפת תשואה יומית: מידע ע'פ דרישה")]
+        HRESULT GetAccountYieldByRequirement(
+                        [in] long sessionId, 
+                        [in, out] SAFEARRAY(AccountYieldByRequirement)* psaStrRecords, 
+                        [in] long Branch, 
+                        [in] long Account, 
+                        [in] long StartDate, 
+                        [in] YieldDataType DataType, 
+                        [in, optional, defaultvalue(0)] long AccountYieldOnly, 
+                        [out, retval] long* retVal);
+        [id(0x0000003e), helpstring("שליפת תשואה יומית: מידע מפורט")]
+        HRESULT GetAccountYieldDetailed(
+                        [in] long sessionId, 
+                        [in, out] SAFEARRAY(AccountYieldDetailed)* psaStrRecords, 
+                        [in] long Branch, 
+                        [in] long Account, 
+                        [in] long StartDate, 
+                        [in] long EndDate, 
+                        [in, optional, defaultvalue(0)] long AccountYieldOnly, 
+                        [out, retval] long* retVal);
+        [id(0x0000003f), helpstring("שולף חשבונות קרנות עם אפשרות פילטור משתמש")]
+        HRESULT GetKranotAccounts(
+                        [in] long sessionId, 
+                        [in] BSTR strQuery, 
+                        [in, out] SAFEARRAY(AccountType)* psaStrRecords, 
+                        [in, out] BSTR* ErrMsg, 
+                        [out, retval] long* retVal);
+        [id(0x00000045), helpstring("מחזיר יתרות עבור כל אופציה")]
+        HRESULT GetOnlineRmFromMaofSession(
+                        [in] long sessionId, 
+                        [in] BSTR Account, 
+                        [in] BSTR Branch, 
+                        [in, out] SAFEARRAY(NvPerOption)* psaStrRecords, 
+                        [out, retval] long* retVal);
+    };
+
+    typedef [uuid(52389AD5-6624-445A-AC5D-188285799188), version(1.0), helpstring("Login Level רמת התחברות")]
+    enum {
+        LoginLevelPermissions = 1,
+        LoginLevelOptionsStocks = 2,
+        LoginLevelAccounts = 3,
+        LoginLevelMax = 50
+    } LoginLevel;
+
+    typedef [uuid(6F67DB39-BC83-4655-A11B-EB9478FFF6E2), version(1.0), helpstring("מצב נוכחי של כניסת משתמש")]
+    enum {
+        LoginSessionActive = 0,
+        LoginSessionInProgress = 1,
+        LoginSessionInactive = 2,
+        LoginSessionDBInitFailure = 3,
+        LoginSessionAS400Failure = 4,
+        LoginSessionPasswordExpired = 5,
+        LoginSessionPasswordChangeFailure = 6,
+        LoginSessionPasswordChangedToday = 7,
+        LoginSessionWrongUserOrPassword = 8,
+        LoginSessionMaxUsersLimit = 9,
+        LoginSessionReLogin = 10,
+        LoginSessionTaskBarBlocked = 11
+    } LoginStatus;
+
+    typedef [uuid(D717A43B-4447-4506-95AD-992A486B6003), version(1.0), helpstring("RZF INQ Structure")]
+    struct tagRZFINQType {
+        [helpstring("                  שגוי")        
+]
+        BSTR ERR;
+        [helpstring("     סיסטם מקור הפקודה")        
+]
+        BSTR SYS_TYPE;
+        [helpstring("            -מטרת השדר")        
+]
+        BSTR SND_RCV;
+        [helpstring("MANA/ORDR  שיטת הפקודה")        
+]
+        BSTR ORDR_TYPE;
+        [helpstring("         סיסמאת המשתמש")        
+]
+        BSTR OPR_NAME;
+        [helpstring("0=DETAIL     סוג פירוט")        
+]
+        BSTR SUG_INQ;
+        [helpstring("  FMR  -    ספרור שוטף")        
+]
+        BSTR SEQ_N;
+        [helpstring("   מספר מנה/שעה אחרונה")        
+]
+        BSTR MANA_N;
+        [helpstring("         מספר נייר ערך")        
+]
+        BSTR BNO_N;
+        [helpstring("               שם נייר")        
+]
+        BSTR BNO_NAME;
+        [helpstring("      קוד קניה / מכירה")        
+]
+        BSTR OP;
+        [helpstring("                  סניף")        
+]
+        BSTR BRANCH_N;
+        [helpstring("                   תיק")        
+]
+        BSTR TIK_N;
+        [helpstring("  סוג  חשבון מפצל/מעבר")        
+]
+        BSTR SUG_MAVR_N;
+        [helpstring("  מספר חשבון מפצל/מעבר")        
+]
+        BSTR ID_MAVR_N;
+        [helpstring("             סוג חשבון")        
+]
+        BSTR SUG_N;
+        [helpstring("                 חשבון")        
+]
+        BSTR ID_N;
+        [helpstring("             שם החשבון")        
+]
+        BSTR ID_NAME;
+        [helpstring("             סוג חשבון")        
+]
+        BSTR SUG_ID_N;
+        [helpstring("            קוד נוסטרו")        
+]
+        BSTR NOSTRO;
+        [helpstring("           כמות מבוקשת")        
+]
+        BSTR ORDR_NV_N;
+        [helpstring("             סוג פקודה")        
+]
+        BSTR ORDR_SUG;
+        [helpstring("            מחיר הזמנה")        
+]
+        BSTR ORDR_PRC_N;
+        [helpstring("      זמן קליטת ההזמנה")        
+]
+        BSTR ORDR_TIME;
+        [helpstring("            כמות בעסקה")        
+]
+        BSTR DIL_NV_N;
+        [helpstring("             מחיר עסקה")        
+]
+        BSTR DIL_PRC_N;
+        [helpstring("             שעת העסקה")        
+]
+        BSTR DIL_TIME_N;
+        [helpstring("        מספר הודעת חבר")        
+]
+        BSTR MBR_SEQ_N;
+        [helpstring("        מספר הודעת רצף")        
+]
+        BSTR RZF_SEQ_N;
+        [helpstring("       מספר פקודה ברצף")        
+]
+        BSTR RZF_ORD_N;
+        [helpstring("    HOST - ספרור מיוחד")        
+]
+        BSTR ORDER_NO_N;
+        [helpstring("       מספר אישור עסקה")        
+]
+        BSTR DIL_N;
+        [helpstring("          סטטוס הפקודה")        
+]
+        BSTR COD_UPD;
+        [helpstring("          סטטוס הפקודה")        
+]
+        BSTR STS;
+        [helpstring("   נתונים חסרים/שגויים")        
+]
+        BSTR ERR_DATA;
+        [helpstring("                  שגוי")        
+]
+        BSTR ERR_INQ;
+        [helpstring("                  שגוי")        
+]
+        BSTR ERR_UPD;
+        [helpstring("0=ORDR  1=DIL  2=SUM  ")        
+]
+        BSTR SUG_INFO;
+        [helpstring("           הודעה כללית")        
+]
+        BSTR MSG1;
+        [helpstring("            מצב הפקודה")        
+]
+        BSTR STS_NAME;
+        [helpstring("            מצב הפקודה")        
+]
+        BSTR DSP_FMR;
+    } RZFINQType;
+
+    typedef [uuid(F38FA8FA-B65A-4C97-BEA9-030CDD126924), version(1.0), helpstring("Query types enumaration")]
+    enum {
+        qtDetailed = 48,
+        qtSummary = 49
+    } QueryType;
+
+    typedef [uuid(D717A43A-4447-4506-95AD-992A486B6003), version(1.0), helpstring("Maof INQ Structure")]
+    struct tagMOFINQType {
+        [helpstring("                  שגוי")        
+]
+        BSTR ERR;
+        [helpstring("     סיסטם מקור הפקודה")        
+]
+        BSTR SYS_TYPE;
+        [helpstring("            -מטרת השדר")        
+]
+        BSTR SND_RCV;
+        [helpstring("MANA/ORDR  שיטת הפקודה")        
+]
+        BSTR ORDR_TYPE;
+        [helpstring("         סיסמאת המשתמש")        
+]
+        BSTR OPR_NAME;
+        [helpstring("0=DETAIL     סוג פירוט")        
+]
+        BSTR SUG_INQ;
+        [helpstring("  FMR  -    ספרור שוטף")        
+]
+        BSTR SEQ_PIC;
+        [helpstring("                      ")        
+]
+        BSTR MANA_PIC;
+        [helpstring("         מספר נייר ערך")        
+]
+        BSTR BNO_PIC;
+        [helpstring("               שם נייר")        
+]
+        BSTR BNO_NAME;
+        [helpstring("      קוד קניה / מכירה")        
+]
+        BSTR OP;
+        [helpstring("                  סניף")        
+]
+        BSTR BRANCH_PIC;
+        [helpstring("                   תיק")        
+]
+        BSTR TIK_PIC;
+        [helpstring("                      ")        
+]
+        BSTR SUG_MAVR_PIC;
+        [helpstring("                      ")        
+]
+        BSTR ID_MAVR_PIC;
+        [helpstring("                      ")        
+]
+        BSTR SUG_PIC;
+        [helpstring("                      ")        
+]
+        BSTR ID_PIC;
+        [helpstring("             שם החשבון")        
+]
+        BSTR ID_NAME;
+        [helpstring("                      ")        
+]
+        BSTR SUG_ID_PIC;
+        [helpstring("            קוד נוסטרו")        
+]
+        BSTR NOSTRO;
+        [helpstring("           כמות מבוקשת")        
+]
+        BSTR ORDR_NV_PIC;
+        [helpstring("             סוג פקודה")        
+]
+        BSTR ORDR_SUG;
+        [helpstring("            מחיר הזמנה")        
+]
+        BSTR ORDR_PRC_PIC;
+        [helpstring("      זמן קליטת ההזמנה")        
+]
+        BSTR ORDR_TIME;
+        [helpstring("            כמות בעסקה")        
+]
+        BSTR DIL_NV_PIC;
+        [helpstring("             מחיר עסקה")        
+]
+        BSTR DIL_PRC_PIC;
+        [helpstring("             שעת העסקה")        
+]
+        BSTR DIL_TIME_PIC;
+        [helpstring("        מספר הודעת חבר")        
+]
+        BSTR MBR_SEQ_PIC;
+        [helpstring("        מספר הודעת רצף")        
+]
+        BSTR RZF_SEQ_PIC;
+        [helpstring("       מספר פקודה ברצף")        
+]
+        BSTR RZF_ORD_PIC;
+        [helpstring("    HOST - ספרור מיוחד")        
+]
+        BSTR ORDER_NO_PIC;
+        [helpstring("       מספר אישור עסקה")        
+]
+        BSTR DIL_PIC;
+        [helpstring("          סטטוס הפקודה")        
+]
+        BSTR COD_UPD;
+        [helpstring("          סטטוס הפקודה")        
+]
+        BSTR STS;
+        [helpstring("   נתונים חסרים/שגויים")        
+]
+        BSTR ERR_DATA;
+        [helpstring("                  שגוי")        
+]
+        BSTR ERR_INQ;
+        [helpstring("                  שגוי")        
+]
+        BSTR ERR_UPD;
+        [helpstring("0=ORDR  1=DIL  2=SUM  ")        
+]
+        BSTR SUG_INFO;
+        [helpstring("            מצב הפקודה")        
+]
+        BSTR DSP_FMR;
+    } MOFINQType;
+
+    typedef [uuid(A48CD25E-4E11-4AAB-AC9B-222323E9C900), version(1.0), helpstring("Trade Type Enumaration")]
+    enum {
+        ALLTradeType = 0xffffffff,
+        MF = 0,
+        RZ = 1
+    } TradeType;
+
+    typedef [uuid(D717A43C-4447-4506-95AD-992A486B6003), version(1.0), helpstring("RM Structure")]
+    struct tagRMType {
+        [helpstring("סניף בנק")        
+]
+        BSTR Sug;
+        [helpstring("מס חשבון")        
+]
+        BSTR ID;
+        [helpstring("מס בורסה")        
+]
+        BSTR BNO;
+        [helpstring("סוג רשומה")        
+]
+        BSTR SUG_RC;
+        [helpstring("מס תיק")        
+]
+        BSTR Tik;
+        [helpstring("מס סניף")        
+]
+        BSTR Branch;
+        [helpstring("שם החשבון")        
+]
+        BSTR ID_NAME;
+        [helpstring("מספר של נכס בסיס")        
+]
+        BSTR BS_BNO;
+        [helpstring("שם הני"ע באנגלית")        
+]
+        BSTR SYMBOL_NAM;
+        [helpstring("שם ני"ע")        
+]
+        BSTR BNO_NAME;
+        [helpstring("סוג חשבון")        
+]
+        BSTR SUG_ID;
+        [helpstring("סוג ני"ע")        
+]
+        BSTR SUG_BNO;
+        [helpstring("פעולה אחרונה")        
+]
+        BSTR LAST_OP;
+        [helpstring("Y.M.D ת. פעולה")        
+]
+        BSTR LAST_DT;
+        [helpstring("Y.M.D תחילת השאלה")        
+]
+        BSTR STRT_DT;
+        [helpstring("Y.M.D סיום השאלה")        
+]
+        BSTR END_DT;
+        [helpstring("תקופת פדיון ממוצע")        
+]
+        BSTR AV_TERM;
+        [helpstring("מדור")        
+]
+        BSTR MDR;
+        [helpstring("מנפיק")        
+]
+        BSTR MANPIK;
+        [helpstring("חתך ניהולי לדווח")        
+]
+        BSTR MNG_REP;
+        [helpstring("סוג נגזרת")        
+]
+        BSTR DERIV_COD;
+        [helpstring("מס מיון")        
+]
+        BSTR SORT;
+        [helpstring("סוג חומר")        
+]
+        BSTR SH;
+        [helpstring("סוג שער")        
+]
+        BSTR SUG_PR;
+        [helpstring("מחיר")        
+]
+        BSTR PRC;
+        [helpstring("השנוי במחיר")        
+]
+        BSTR PRC_CHNG;
+        [helpstring("סוג מטבע")        
+]
+        BSTR SUG_CUR;
+        [helpstring("שער המטח")        
+]
+        BSTR PR_MATACH;
+        [helpstring("הון רשום")        
+]
+        BSTR HON_RASHUM;
+        [helpstring("יתרת ערך נקוב")        
+]
+        BSTR NV;
+        [helpstring("עלות")        
+]
+        BSTR COST;
+        [helpstring("תמורה")        
+]
+        BSTR VL;
+        [helpstring("בטוחה קיימת")        
+]
+        BSTR EXT_MARGIN;
+        [helpstring("בטוחה נדרשת")        
+]
+        BSTR REQ_MARGIN;
+        [helpstring("1-סכום")        
+]
+        BSTR SUM1;
+        [helpstring("2-סכום")        
+]
+        BSTR SUM2;
+        [helpstring("אחזקה בחשבון %")        
+]
+        BSTR ID_PCNT;
+        [helpstring("אחזקה בתיק %")        
+]
+        BSTR TK_PCNT;
+        [helpstring("קב.סכימה- נכס פינ")        
+]
+        BSTR LVL1;
+        [helpstring("קב.סכימה- סוג נ"ע")        
+]
+        BSTR LVL2;
+        [helpstring("קב.סכימה- ש. מסחר")        
+]
+        BSTR LVL3;
+        [helpstring("קב.סכימה- סקטורים")        
+]
+        BSTR LVL4;
+        [helpstring("קב.סכימה- מנפיקים")        
+]
+        BSTR LVL5;
+        [helpstring("  קב.סכימה- תקנות")        
+]
+        BSTR LVL6;
+        [helpstring("Y/N  MANG-משתתף ב")        
+]
+        BSTR MANG_COD;
+        [helpstring("מס בנק")        
+]
+        BSTR BANK;
+        [helpstring("סניף בנק")        
+]
+        BSTR BNK_BRANCH;
+        [helpstring("מס חשבון בבנק")        
+]
+        BSTR ID_BANK;
+        [helpstring("מודל")        
+]
+        BSTR MDL;
+        [helpstring("קבוצת מאזן")        
+]
+        BSTR BLC;
+        [helpstring("קבוצת מאזן לית.חובה")        
+]
+        BSTR BLC_NEG;
+        [helpstring("סעיף תקציבי")        
+]
+        BSTR BGT;
+        [helpstring("סיווג")        
+]
+        BSTR SIVUG;
+        [helpstring("האם בעל ענין")        
+]
+        BSTR INTRST_COD;
+        [helpstring("האם גובים ד.נהול עבור הני"ע")        
+]
+        BSTR PAY_MNG;
+        [helpstring("FILLER")        
+]
+        BSTR FIL;
+    } RMType;
+
+    typedef [uuid(D717A438-4447-4506-95AD-992A486B6003), version(1.0), helpstring("Account Structure")]
+    struct tagAccountType {
+        [helpstring("סניף")        
+]
+        BSTR BRANCH_NO;
+        [helpstring("מספר חשבון")        
+]
+        BSTR ID_NO;
+                
+BSTR ID_FIL;
+        [helpstring("מספר תיק")        
+]
+        BSTR TIK_NO;
+        [helpstring("שם חשבון")        
+]
+        BSTR ID_NAME;
+                
+BSTR REQ_MRGN;
+                
+BSTR RCRDIT_MAOF;
+        [helpstring("מספר עיר")        
+]
+        BSTR ID_TOWN;
+        [helpstring("מספר טלפון")        
+]
+        BSTR ID_PHONE_NO;
+                
+BSTR CRDIT_LN;
+                
+BSTR CRDIT_MAOF;
+                
+BSTR MNIOT_VL;
+                
+BSTR ID_TOT_VL;
+                
+BSTR MIN_COM;
+                
+BSTR MIN_C_MAOF;
+                
+BSTR MAX_C_MAOF;
+                
+BSTR MIN_C_FUTR;
+                
+BSTR MAX_C_FUTR;
+        [helpstring("סיווג")        
+]
+        BSTR SIVUG;
+                
+BSTR MAOF_COD;
+                
+BSTR FREEZ_COD;
+                
+BSTR FREEZ_TEXT;
+                
+BSTR IMM_DRAFT;
+                
+BSTR COD_H_BNO;
+                
+BSTR COD_H_MAOF;
+                
+BSTR COD_H_KUPA;
+                
+BSTR COD_H_FRGN;
+                
+BSTR COD_H_FUTR;
+                
+BSTR COD_H_CURR;
+                
+BSTR ID_PCNT;
+        [helpstring("סוג")        
+]
+        BSTR SUG_ID;
+                
+BSTR TAT_SIVUG;
+                
+BSTR EXT_MARGIN;
+                
+BSTR ITRA_CASH;
+                
+BSTR ID_STREET;
+                
+BSTR PRE_MAOF1;
+                
+BSTR PRE_MAOF2;
+                
+BSTR PRE_MAOF3;
+                
+BSTR PRE_MAOF4;
+                
+BSTR PRE_MAOF5;
+                
+BSTR MDL;
+        [helpstring("קוד זיהוי טלפוני")        
+]
+        BSTR TEL_PW;
+                
+BSTR FIL;
+    } AccountType;
+
+    typedef [uuid(D717A436-4447-4506-95AD-992A486B6003), version(1.0), helpstring("User Password Structure")]
+    struct tagUserPasswordType {
+        [helpstring("סוג רשומה")        
+]
+        BSTR SUG_RC;
+        [helpstring("מספר משתמש")        
+]
+        BSTR USR_NAME;
+        [helpstring("סיסמא")        
+]
+        BSTR USR_PW;
+        [helpstring("סניף")        
+]
+        BSTR Branch;
+        [helpstring("סוג")        
+]
+        BSTR Sug;
+        [helpstring("חשבון מפצל")        
+]
+        BSTR MFZL_ID;
+        [helpstring("מספר תיק")        
+]
+        BSTR TIK_N;
+        [helpstring("שם משתמש")        
+]
+        BSTR ID_N;
+        [helpstring("שם אפליקציה")        
+]
+        BSTR APPL_N;
+        [helpstring("Device Name")        
+]
+        BSTR DEVICE_N;
+        [helpstring("רמת אימות")        
+]
+        BSTR AUTH_LVL;
+        [helpstring("Field")        
+]
+        BSTR FIELD;
+        [helpstring("Operator")        
+]
+        BSTR OPERATOR;
+        [helpstring("Value")        
+]
+        BSTR val;
+        [helpstring("תאריך עדכון אחרון")        
+]
+        BSTR UPD_DAT;
+        [helpstring("תאריך סיום")        
+]
+        BSTR END_DAT;
+        [helpstring("שם משתמש מעדכן")        
+]
+        BSTR UPD_USR_N;
+        [helpstring("מספר משתמש מעדכן")        
+]
+        BSTR FROM_USR_N;
+        [helpstring("FIL")        
+]
+        BSTR FIL;
+    } UserPasswordType;
+
+    typedef [uuid(D717A435-4447-4506-95AD-992A486B6003), version(1.0), helpstring("Basic Rezef Order Structure")]
+    struct tagRezefBasicOrder {
+                
+BSTR operation;
+                
+BSTR asmachta_fmr;
+                
+BSTR ammount;
+                
+BSTR price;
+                
+BSTR Stock_Number;
+                
+BSTR OP;
+                
+BSTR Branch;
+                
+BSTR Account;
+                
+BSTR order_type;
+                
+BSTR asmachta_rezef;
+                
+BSTR price_percent;
+                
+BSTR shlav;
+                
+BSTR Nv_Del;
+                
+BSTR ORDR_TYPE;
+                
+BSTR Mana;
+                
+BSTR Zira;
+                
+BSTR Nv_Min;
+                
+BSTR Strat_Date;
+                
+BSTR end_date;
+    } RezefBasicOrder;
+
+    typedef [uuid(A71C84F7-600D-4869-88F9-E14ED5FFB0CA), version(1.0), helpstring("Orders errors enumaration")]
+    enum {
+        Fatal = 48,
+        Confirmation = 49,
+        ReEnter = 50,
+        PasswordReq = 51,
+        Alert = 52,
+        NoError = 53
+    } OrdersErrorTypes;
+
+    typedef [uuid(D717A432-4447-4506-95AD-992A486B6003), version(1.0), helpstring("Maof Basic Order Structure")]
+    struct tagMaofOrderType {
+        [helpstring("סניף")        
+]
+        BSTR Branch;
+        [helpstring("חשבון")        
+]
+        BSTR Account;
+        [helpstring("מספר אופציה")        
+]
+        BSTR Option;
+        [helpstring("פעולה")        
+]
+        BSTR operation;
+        [helpstring("כמות")        
+]
+        BSTR ammount;
+        [helpstring("מחיר")        
+]
+        BSTR price;
+        [helpstring("סוג פקודה")        
+]
+        BSTR Sug_Pkuda;
+        [helpstring("אסמכתא")        
+]
+        BSTR Asmachta;
+        [helpstring("אסמכתא פ.מ.ר")        
+]
+        BSTR AsmachtaFmr;
+        [helpstring("נקלט")        
+]
+        long Pass;
+        [helpstring("זיהוי פקודה פנימי")        
+]
+        long OrderID;
+    } MaofOrderType;
+
+    typedef [uuid(9FAA45D6-068B-4378-9537-BA102D832532), version(1.0), helpstring("בטחונות פלא להוראת מעוף")]
+    struct tagPeleSecurityType {
+        [helpstring("נכס בסיס")        
+]
+        int BaseAsset;
+        [helpstring("מסגרת")        
+]
+        double Margin;
+        [helpstring("בטחונות")        
+]
+        double Security;
+        [helpstring("מגבלת פרמיה יומית")        
+]
+        double dailyPremium;
+        [helpstring("פרמיית פקודות")        
+]
+        double OrdersPremium;
+        [helpstring("העברה")        
+]
+        int Pass;
+    } PeleSecurityType;
+
+    typedef [uuid(8B457C76-768D-42BE-AAB4-048D172B960B), version(1.0), helpstring("Base Asset Type Enumaration")]
+    enum {
+        BaseAssetAll = 0xffffffff,
+        BaseAssetMaof = 1,
+        BaseAssetDollar = 2,
+        BaseAssetInterest = 3,
+        BaseAssetBanks = 4,
+        BaseAssetEuro = 5,
+        BaseAssetShacharBenoni = 6,
+        BaseAssetShacharAroch = 7
+    } BaseAssetTypes;
+
+    typedef [uuid(48540B22-2B02-4F4A-96EC-C76784BB7255), version(1.0), helpstring("Asset Securities Type Enumaration")]
+    struct tagAssetSecuritiesType {
+                
+BaseAssetTypes nBaseAsset;
+                
+double IV;
+                
+double Madad;
+                
+double Dividend;
+                
+double Interest;
+                
+int SenarioNumber;
+                
+double ExistingSec;
+                
+double NeededSec;
+    } AssetSecuritiesType;
+
+    typedef [uuid(24508459-07E6-4884-BEBC-7B958EBE4D3E), version(1.0), helpstring("Security Calculation Type")]
+    enum {
+        RMOnly = 0,
+        RM_Dill = 1,
+        RM_Dill_Orders = 2,
+        RM_Dill_ShortOrders = 3
+    } SecurityCalcType;
+
+    typedef [uuid(1D4DFB4D-5F79-4CDA-B7BE-7DDC4622540C), version(1.0), helpstring("Short Account Structure")]
+    struct tagShortAccountType {
+        [helpstring("מספר תיק")        
+]
+        BSTR Tik;
+        [helpstring("סניף")        
+]
+        BSTR Branch;
+        [helpstring("סוג")        
+]
+        BSTR Sug;
+        [helpstring("חשבון")        
+]
+        BSTR ID;
+        [helpstring("שם")        
+]
+        BSTR AccountName;
+        [helpstring("שם נוסף")        
+]
+        BSTR SortAccountName;
+        [helpstring("קוד מעוף")        
+]
+        BSTR MaofCode;
+        [helpstring("קוד עתידי")        
+]
+        BSTR FutureCode;
+        [helpstring("קוד ניע")        
+]
+        BSTR BnoCode;
+        [helpstring("קוד קופה")        
+]
+        BSTR CashCode;
+        [helpstring("עובד חברה")        
+]
+        BSTR CompanyEmployee;
+        [helpstring("סיווג")        
+]
+        BSTR SIVUG;
+        [helpstring("קוד חשבון מפצל")        
+]
+        BSTR MefazelCode;
+        [helpstring("סוג חשבון")        
+]
+        BSTR SugId;
+        [helpstring("מודל")        
+]
+        BSTR Model;
+        [helpstring("תת מודל")        
+]
+        BSTR SubModel;
+        [helpstring("אחוז מניות מותר")        
+]
+        BSTR PermittedStockPercent;
+        [helpstring("סטיית תקן שנתית")        
+]
+        BSTR YearlyStd;
+        [helpstring("מניות משוקלל")        
+]
+        BSTR WeightedStocks;
+        [helpstring("סיסמת אינטרנט")        
+]
+        BSTR InternetPswd;
+        [helpstring("אשראי ניע")        
+]
+        BSTR BnoCredit;
+        [helpstring("עמלת מניות")        
+]
+        BSTR StocksCommission;
+        [helpstring("עמלת אגח")        
+]
+        BSTR BondsCommission;
+        [helpstring("עמלת מקמ")        
+]
+        BSTR MakamCommission;
+        [helpstring("עמלת קרנות")        
+]
+        BSTR FundsCommission;
+        [helpstring("קבוצת מאזן")        
+]
+        BSTR BLC;
+        [helpstring("קבוצת מאזן נגדית")        
+]
+        BSTR BalanceGrp;
+        [helpstring("סעיף תקציבי")        
+]
+        BSTR BudgetSeif;
+        [helpstring("עמלה מינימום מעוף בשח")        
+]
+        BSTR MinMaofCommission;
+        [helpstring("תת סיווג")        
+]
+        BSTR TatSivug;
+        [helpstring("תאריך פתיחת חשבון")        
+]
+        BSTR OpeningDate;
+        [helpstring("חשבון מעבר")        
+]
+        BSTR AccountMaavar;
+        [helpstring("קוד זיהוי טלפוני")        
+]
+        BSTR TelephoneCode;
+    } ShortAccountType;
+
+    typedef [uuid(73D20C57-FA21-4BFE-B71B-39A4E1F11900), version(1.0), helpstring("RM Online Header")]
+    struct tagRmOnlineTotalInfoType {
+        [helpstring("מזומן בוקר = מזומן בפתיחה")        
+]
+        BSTR sBaseCash;
+        [helpstring("מזומן נוכחי = מזומן אחרון")        
+]
+        BSTR sLastCash;
+        [helpstring("שינוי מזומן")        
+]
+        BSTR sCashChange;
+        [helpstring("שווי בוקר =  שווי בפתיחה")        
+]
+        BSTR sBaseVL;
+        [helpstring("שווי נוכחי - שווי אחרון")        
+]
+        BSTR sLastVL;
+        [helpstring("רווח/הפסד = רווח והפסד יומי")        
+]
+        BSTR sProfitLoss;
+        [helpstring("תאריך + שעה")        
+]
+        BSTR sDate;
+        [helpstring("שינוי עלות")        
+]
+        BSTR sCngCost;
+    } RmOnlineTotalInfoType;
+
+    typedef [uuid(85B84A22-9EB6-4C76-9E96-561AB3D527D7), version(1.0), helpstring("RM Online Response Record")]
+    struct tagRmOnlineRecordType {
+        [helpstring("שם נייר")        
+]
+        BSTR sBnoName;
+        [helpstring("מספר נייר")        
+]
+        BSTR sBnoNum;
+        [helpstring("סוג נייר")        
+]
+        BSTR sSugBno;
+        [helpstring("שער בסיס = מחיר בפתיחה")        
+]
+        BSTR sBasePrice;
+        [helpstring("יתרת בוקר = כמות בפתיחה")        
+]
+        BSTR sBaseNV;
+        [helpstring("שווי בוקר = ערך בפתיחה")        
+]
+        BSTR sBaseVL;
+        [helpstring("שער אחרון")        
+]
+        BSTR sLastPrice;
+        [helpstring("כמות נוכחית = כמות אחרונה")        
+]
+        BSTR sLastNV;
+        [helpstring("שווי נוכחי = ערך אחרון")        
+]
+        BSTR sLastVL;
+        [helpstring("שינוי בשווי = שינוי ערך")        
+]
+        BSTR sVLChange;
+        [helpstring("תזרים  = תנועה כספית")        
+]
+        BSTR sMoneyMoved;
+        [helpstring("רווח/הפסד = רווח והפסד יומי")        
+]
+        BSTR sProfitLoss;
+        [helpstring("עלות")        
+]
+        BSTR sTotalCost;
+        [helpstring("הפרש/שינוי מעלות")        
+]
+        BSTR sCngCost;
+        [helpstring("עלות ממוצעת")        
+]
+        BSTR sAverageCost;
+        [helpstring("שינוי מעלות באחוזים")        
+]
+        BSTR sCngCostPcnt;
+        [helpstring("קב.סכימה נכס פינ")        
+]
+        BSTR LVL1;
+        [helpstring("קב.סכימה סוג ני''ע")        
+]
+        BSTR LVL2;
+        [helpstring("קב.סכימה ש.מסחר")        
+]
+        BSTR LVL3;
+        [helpstring("קב.סכימה סקטורים")        
+]
+        BSTR LVL4;
+        [helpstring("קב.סכימה מנפיקים")        
+]
+        BSTR LVL5;
+        [helpstring("קב.סכימה תקנות")        
+]
+        BSTR LVL6;
+    } RmOnlineRecordType;
+
+    typedef [uuid(C325EA95-9848-4FD6-9F6F-8284437C0CB8), version(1.0), helpstring("סוג שליפת יתרות און-ליין")]
+    enum {
+        OnlineSessionTypeAccounts = 0,
+        OnlineSessionTypeAll = 1,
+        OnlineSessionTypeCustodian = 2,
+        OnlineSessionTypeKranot = 3,
+        OnlineSessionTypeKupa = 4
+    } OnlineSessionType;
+
+    typedef [uuid(0BF1B137-CBC7-44D4-8D96-3368DFADF981), version(1.0), helpstring("Online Session Structure")]
+    struct tagOnlineSessionBalance {
+        [helpstring("סוג רשומה")        
+]
+        int Onl_sug_rc;
+        [helpstring("סניף בנק")        
+]
+        int Onl_sug;
+        [helpstring("מספר חשבון")        
+]
+        int Onl_id_number;
+        [helpstring("שם חשבון")        
+]
+        BSTR Onl_id_name;
+        [helpstring("מספר תיק")        
+]
+        int Onl_tik;
+        [helpstring("סעיף תקציבי")        
+]
+        int Onl_bgt;
+        [helpstring("מספר סניף")        
+]
+        int Onl_branch;
+        [helpstring("מספר בנק")        
+]
+        int Onl_bank;
+        [helpstring("שיטת ניהול")        
+]
+        int Onl_sug_id;
+        [helpstring("תאור חשבון")        
+]
+        BSTR Onl_id_teur;
+        [helpstring("מודל")        
+]
+        int Onl_mdl;
+        [helpstring("סיווג")        
+]
+        BSTR Onl_sivug;
+        [helpstring("תת סיווג")        
+]
+        BSTR Onl_tat_sivug;
+        [helpstring("סניף חשבון מפצל")        
+]
+        int Onl_sg_tik_mf;
+        [helpstring("מס חשבון מפצל")        
+]
+        int Onl_id_tik_mf;
+        [helpstring("סניף בנק מפצל מבצע")        
+]
+        int Onl_sg_bgt_mf;
+        [helpstring("חן מפצל במבצע")        
+]
+        int Onl_id_bgt_mf;
+        [helpstring("תשואה שנתית")        
+]
+        double Onl_yld_id_yr;
+        [helpstring("תשואה חודשית")        
+]
+        double Onl_yld_id_mon;
+        [helpstring("מספר נייר")        
+]
+        int Onl_bno;
+        [helpstring("סוג נייר ערך")        
+]
+        int Onl_sug_bno;
+        [helpstring("סוג מטבע")        
+]
+        int Onl_sug_cur;
+        [helpstring("מספר נכס בסיס")        
+]
+        int Onl_bs_bno;
+        [helpstring("מספר ני'ע בבנק")        
+]
+        int Onl_bno_bank;
+        [helpstring("Symbol")        
+]
+        BSTR Onl_symbol_nam;
+        [helpstring("Isin")        
+]
+        BSTR Onl_isin;
+        [helpstring("שם נייר")        
+]
+        BSTR Onl_bno_name;
+        [helpstring("תאור נייר")        
+]
+        BSTR Onl_bno_teur;
+        [helpstring("מדור")        
+]
+        int Onl_mdr;
+        [helpstring("מנפיק")        
+]
+        int Onl_manpik;
+        [helpstring("סוג נגזרת")        
+]
+        int Onl_deriv_code;
+        [helpstring("מס מיון")        
+]
+        int Onl_sort;
+        [helpstring("סוג שער")        
+]
+        int Onl_sug_pr;
+        [helpstring("מחיר")        
+]
+        double Onl_prc;
+        [helpstring("שער המטח")        
+]
+        double Onl_pr_matach;
+        [helpstring("אינד למטח")        
+]
+        BSTR Onl_flag_mth;
+        [helpstring("הון רשום")        
+]
+        double Onl_hon_rashum;
+        [helpstring("מדיניות השקעה")        
+]
+        int Onl_invst_plcy;
+        [helpstring("הרכב נכסים")        
+]
+        int Onl_asset_cod;
+        [helpstring("סקטור לפי בורסה")        
+]
+        int Onl_sector;
+        [helpstring("Mult")        
+]
+        double Onl_mult_prc;
+        [helpstring("מטבע ראשי")        
+]
+        int Onl_main_cur;
+        [helpstring("מטבע משני")        
+]
+        int Onl_sub_cur;
+        [helpstring("לבטוחה RATING")        
+]
+        int Onl_rating;
+        [helpstring("קב. סכימה נכס פי")        
+]
+        BSTR Onl_lvl1;
+        [helpstring("קב. סכימה סוג נייר")        
+]
+        BSTR Onl_lvl2;
+        [helpstring("קב. סכימה ש.מסחר")        
+]
+        BSTR Onl_lvl3;
+        [helpstring("קב. סכימה סקטור")        
+]
+        BSTR Onl_lvl4;
+        [helpstring("קב. סכימה מנפיק")        
+]
+        BSTR Onl_lvl5;
+        [helpstring("קב. סכימה תקנות")        
+]
+        BSTR Onl_lvl6;
+        [helpstring("דירוג אגח")        
+]
+        BSTR Onl_dirug_ag;
+        [helpstring("סוג אופציות")        
+]
+        BSTR Onl_sug_opt;
+        [helpstring("מחיר פקיעה")        
+]
+        double Onl_exp_prc;
+        [helpstring("תאריך פקיעה")        
+]
+        BSTR Onl_exp_dat;
+        [helpstring("סטיית תקן")        
+]
+        double Onl_std_dev;
+        [helpstring("ריבית")        
+]
+        double Onl_intrst;
+        [helpstring("DELTA")        
+]
+        double Onl_delta;
+        [helpstring("קוד נכס בסיס")        
+]
+        int Onl_opt_basis;
+        [helpstring("חוזים")        
+]
+        int Onl_sum_hoze;
+        [helpstring("זיהוי המסלקה")        
+]
+        int Onl_mislaka;
+        [helpstring("ארץ התאגדות")        
+]
+        BSTR Onl_cntr_rlt;
+        [helpstring("מספר סידורי רציף")        
+]
+        int Onl_siduri;
+        [helpstring("מספר חבר מפיץ")        
+]
+        int Onl_mbr_dst;
+        [helpstring("ענף")        
+]
+        int Onl_anaf;
+        [helpstring("מחיר בסיס")        
+]
+        double Onl_prc_basis;
+        [helpstring("Beta")        
+]
+        double Onl_beta;
+        [helpstring("מכפיל")        
+]
+        double Onl_machpil;
+        [helpstring("אחוז המלצה")        
+]
+        double Onl_amlza_pcnt;
+        [helpstring("משקל במדד")        
+]
+        double Onl_value_mdd;
+        [helpstring("קוד מדד")        
+]
+        int Onl_cod_mdd;
+        [helpstring("אחוז עמלה")        
+]
+        double Onl_com_pcnt;
+        [helpstring("סכום עמלה")        
+]
+        double Onl_com_sum;
+        [helpstring("יתרת ערך נקוב")        
+]
+        double Onl_nv_bkr;
+        [helpstring("עלות בוקר")        
+]
+        double Onl_cost_bkr;
+        [helpstring("בוקר FIFO עלות")        
+]
+        double Onl_fifo_bkr;
+        [helpstring("עלות במטח בוקר")        
+]
+        double Onl_cost_mth;
+        [helpstring("תמורה בוקר")        
+]
+        double Onl_vl_bkr;
+        [helpstring("השאלות נקוב")        
+]
+        double Onl_nv_ashala;
+        [helpstring("יתרות צל")        
+]
+        double Onl_nv_tzl_bkr;
+        [helpstring("שווי צל")        
+]
+        double Onl_vl_tzl_bkr;
+        [helpstring("בטוחה קיימת")        
+]
+        double Onl_mrgn_bkr;
+        [helpstring("תקבול שח")        
+]
+        double Onl_tkb_sm_bkr;
+        [helpstring("תקבול כמות")        
+]
+        double Onl_tkb_nv_bkr;
+        [helpstring("תקבול שווי")        
+]
+        double Onl_tkb_vl_bkr;
+        [helpstring("אחזקה בחשבון %")        
+]
+        double Onl_pcnt_bkr;
+        [helpstring("תשואה שנתית")        
+]
+        double Onl_yld_bn_yr;
+        [helpstring("תשואה חודשית")        
+]
+        double Onl_yld_bn_mon;
+        [helpstring("כמות מוזמנת בקניה")        
+]
+        double Onl_nv_ord_by;
+        [helpstring("מחיר הזמנה בקניה")        
+]
+        double Onl_pr_ord_by;
+        [helpstring("שער מטח הזמנה בקניה")        
+]
+        double Onl_pr_m_ord_b;
+        [helpstring("שווי הזמנה בקניה")        
+]
+        double Onl_vl_ord_by;
+        [helpstring("כמות ביצוע בקניה")        
+]
+        double Onl_nv_dil_by;
+        [helpstring("מחיר ביצוע בקניה")        
+]
+        double Onl_pr_dil_by;
+        [helpstring("שער מטח ביצוע בקניה")        
+]
+        double Onl_pr_m_dil_b;
+        [helpstring("שווי ביצוע בקניה")        
+]
+        double Onl_vl_dil_by;
+        [helpstring("הפרש מחיר הז.ביצוע")        
+]
+        double Onl_vl_def_by;
+        [helpstring("כמות הזמנה מכירה")        
+]
+        double Onl_nv_ord_sl;
+        [helpstring("מחיר הזמנה מכירה")        
+]
+        double Onl_pr_ord_sl;
+        [helpstring("שער הזמנה מכירה")        
+]
+        double Onl_pr_m_ord_s;
+        [helpstring("שווי הזמנה מכירה")        
+]
+        double Onl_vl_ord_sl;
+        [helpstring("כמות ביצוע מכירה")        
+]
+        double Onl_nv_dil_sl;
+        [helpstring("מחיר ביצוע מכירה")        
+]
+        double Onl_pr_dil_sl;
+        [helpstring("שער ביצוע מכירה")        
+]
+        double Onl_pr_m_dil_s;
+        [helpstring("שווי ביצוע מכירה")        
+]
+        double Onl_vl_dil_sl;
+        [helpstring("הפרש מחיר הז.ביצוע")        
+]
+        double Onl_vl_def_sl;
+        [helpstring("סה'כ הפקדות")        
+]
+        double Onl_nv_hf;
+        [helpstring("מחיר הפקדה")        
+]
+        double Onl_prc_hf;
+        [helpstring("שער מטח הפקדה")        
+]
+        double Onl_pr_mth_hf;
+        [helpstring("סה'כ שווי הפקדה")        
+]
+        double Onl_vl_hf;
+        [helpstring("סה'כ משיכות")        
+]
+        double Onl_nv_msh;
+        [helpstring("מחיר משיכה")        
+]
+        double Onl_prc_msh;
+        [helpstring("שער מט'ח משיכה")        
+]
+        double Onl_pr_mth_msh;
+        [helpstring("סה'כ שווי משיכות")        
+]
+        double Onl_vl_msh;
+        [helpstring("שווי יצירות")        
+]
+        double Onl_vl_itzirot;
+        [helpstring("שווי פדיונות")        
+]
+        double Onl_vl_pedion;
+        [helpstring("שער מט'ח סגירה")        
+]
+        double Onl_pr_mth_cls;
+        [helpstring("תמורה סגירה RR")        
+]
+        double Onl_vl_cls;
+        [helpstring("שער סגירה RR")        
+]
+        double Onl_prc_cls;
+        [helpstring("שער סגירה היום")        
+]
+        double Onl_prc_cls_d;
+        [helpstring("ש. סגירה נכס בסיס")        
+]
+        double Onl_prc_bs_bno;
+        [helpstring("תקבול סגירה שח")        
+]
+        double Onl_tkb_sm_cls;
+        [helpstring("תקבול סגירה כמות")        
+]
+        double Onl_tkb_nv_cls;
+        [helpstring("תקבול סגירה שווי")        
+]
+        double Onl_tkb_vl_cls;
+        [helpstring("כמות השאלות סגירה")        
+]
+        double Onl_nv_ash_cls;
+        [helpstring("ערך חשיפה")        
+]
+        double Onl_val_hasifa;
+        [helpstring("בטוחה נדרשת")        
+]
+        double Onl_req_mrgn;
+        [helpstring("סהכ שווי")        
+]
+        double Onl_tot_val;
+        [helpstring("סה''כ ערך נקוב")        
+]
+        double Onl_tot_nv;
+        [helpstring("פקטור להכפלה")        
+]
+        double Onl_factor;
+        [helpstring("רווח מחושב")        
+]
+        double Onl_stt_prof;
+        [helpstring("רווח שממוש")        
+]
+        double Onl_real_prof;
+        [helpstring("מחשב בוקר")        
+]
+        BSTR Onl_clnt_bkr;
+        [helpstring("מחשב ONL")        
+]
+        BSTR Onl_clnt_onl;
+        [helpstring("פעל במסחר")        
+]
+        BSTR Onl_id_pail;
+        [helpstring("כולל רשומה WIF")        
+]
+        BSTR Onl_rec_40;
+        [helpstring("סמל נייר זר")        
+]
+        BSTR Onl_frgn_bno;
+        [helpstring("נייר דואלי")        
+]
+        BSTR Onl_bno_duali;
+        [helpstring("תאריך העידכון")        
+]
+        int Onl_upd_date;
+                
+double Onl_duration;
+        [helpstring("שעת העידכון")        
+]
+        int Onl_upd_time;
+        [helpstring("שם באנגלית")        
+]
+        BSTR Onl_eng_name;
+        [helpstring("תשואה לפדיון")        
+]
+        double Onl_yld_ytm;
+        [helpstring("מח"מ כלכלי")        
+]
+        double Onl_dur_kalkali;
+        [helpstring("ארץ התאגדות")        
+]
+        int Onl_stk_type;
+        [helpstring("FILLER")        
+]
+        BSTR Onl_fil;
+        [helpstring("global counter")        
+]
+        long Onl_global_counter;
+    } OnlineSessionBalance;
+
+    typedef [uuid(083AE28E-D225-41FA-9E09-2E91DF8CFFE0), version(1.0), helpstring("Query types enumaration")]
+    enum {
+        csOpen = 0,
+        csProcessing = 1,
+        csClosed = 2
+    } ConnectionState;
+
+    typedef [uuid(D717A43E-4447-4506-95AD-992A486B6003), version(1.0), helpstring("K300 Maof Structure")]
+    struct tagK300MaofType {
+        [helpstring("סוג רשומה")        
+]
+        BSTR SUG_REC;
+        [helpstring("שיטת מסחר")        
+]
+        BSTR TRADE_METH;
+        [helpstring("מס בורסה")        
+]
+        BSTR BNO_Num;
+        [helpstring("סימן לרשומה אחרונה")        
+]
+        BSTR LAST_REC;
+        [helpstring("מס סדורי")        
+]
+        BSTR SIDURI_Num;
+        [helpstring("סימבול אנגלי")        
+]
+        BSTR SYMBOL_E;
+        [helpstring(" סימבול עברי")        
+]
+        BSTR Symbol;
+        [helpstring("שם אנגלי")        
+]
+        BSTR BNO_NAME_E;
+        [helpstring("שם עברי")        
+]
+        BSTR BNO_NAME;
+        [helpstring("מספר ענף")        
+]
+        BSTR BRANCH_NO;
+        [helpstring("מספר תת ענף")        
+]
+        BSTR BRANCH_U;
+        [helpstring("סוג חוזה")        
+]
+        BSTR SUG_BNO;
+        [helpstring("MIN גודל פקודה")        
+]
+        BSTR MIN_UNIT;
+        [helpstring("גבול פקודה חריגה")        
+]
+        BSTR HARIG_NV;
+        [helpstring("שער רצפה")        
+]
+        BSTR MIN_PR;
+        [helpstring("שער תקרה")        
+]
+        BSTR MAX_PR;
+        [helpstring("שער בסיס")        
+]
+        BSTR BASIS_PRC;
+        [helpstring("קוד סוג שער בסיס")        
+]
+        BSTR BASIS_COD;
+        [helpstring("קוד מצב חוזה")        
+]
+        BSTR STATUS_COD;
+        [helpstring("תאריך פקיעה")        
+]
+        BSTR EX_DATE;
+        [helpstring("מחיר מימוש")        
+]
+        BSTR EX_PRC;
+        [helpstring("מכפיל לחישוב נפח")        
+]
+        BSTR VL_MULT;
+        [helpstring("קוד לחישוב נפח")        
+]
+        BSTR VL_COD;
+        [helpstring("קוד איפוס")        
+]
+        BSTR ZERO_COD;
+        [helpstring("שלב מסחר")        
+]
+        BSTR shlav;
+        [helpstring("מצב ניע")        
+]
+        BSTR STATUS;
+        [helpstring("קוד הפסקת מסחר")        
+]
+        BSTR TRD_STP_CD;
+        [helpstring("סיבת הפסקת מסחר")        
+]
+        BSTR TRD_STP_N;
+        [helpstring("שעת פתיחת הפסקה")        
+]
+        BSTR STP_OPN_TM;
+        [helpstring("1 לימיט קניה")        
+]
+        BSTR LMT_BY1;
+        [helpstring("2 לימיט קניה")        
+]
+        BSTR LMT_BY2;
+        [helpstring("3 לימיט קניה")        
+]
+        BSTR LMT_BY3;
+        [helpstring("1כמות לימיט קניה")        
+]
+        BSTR LMY_BY1_NV;
+        [helpstring("2כמות לימיט קניה")        
+]
+        BSTR LMY_BY2_NV;
+        [helpstring("3כמות לימיט קניה")        
+]
+        BSTR LMY_BY3_NV;
+        [helpstring("שידור חוזר/תיקון")        
+]
+        BSTR RWR_FE;
+        [helpstring("1 לימיט מכירה")        
+]
+        BSTR LMT_SL1;
+        [helpstring("2 לימיט מכירה")        
+]
+        BSTR LMT_SL2;
+        [helpstring("3 לימיט מכירה")        
+]
+        BSTR LMT_SL3;
+        [helpstring("כמות לימיט מכירה 1")        
+]
+        BSTR LMY_SL1_NV;
+        [helpstring("כמות לימיט מכירה 2")        
+]
+        BSTR LMY_SL2_NV;
+        [helpstring("כמות לימיט מכירה 3")        
+]
+        BSTR LMY_SL3_NV;
+        [helpstring("שידור חוזר/תיקון")        
+]
+        BSTR RWR_FF;
+        [helpstring("שער")        
+]
+        BSTR PRC;
+        [helpstring("קוד שער")        
+]
+        BSTR COD_PRC;
+        [helpstring("קוד סוג שער")        
+]
+        BSTR SUG_PRC;
+        [helpstring("שינוי  מהבסיס %")        
+]
+        BSTR LST_DF_BS;
+        [helpstring("שידור חוזר/תיקון")        
+]
+        BSTR RWR_FG;
+        [helpstring("שער עסקה אחרונה")        
+]
+        BSTR LST_DL_PR;
+        [helpstring("שעת עסקה אחרונה")        
+]
+        BSTR LST_DL_TM;
+        [helpstring("מחזור עסקה אחרונה")        
+]
+        BSTR LST_DL_VL;
+        [helpstring("מחזור מתחילת היום")        
+]
+        BSTR DAY_VL;
+        [helpstring("תמורה בשח היום")        
+]
+        BSTR DAY_VL_NIS;
+        [helpstring("מספר עסקאות היום")        
+]
+        BSTR DAY_DIL_NO;
+        [helpstring("שידור חוזר/תיקון")        
+]
+        BSTR RWR_FH;
+        [helpstring("שער יומי גבוה")        
+]
+        BSTR DAY_MAX_PR;
+        [helpstring("שער יומי נמוך")        
+]
+        BSTR DAY_MIN_PR;
+        [helpstring("פוזיציות פתוחות")        
+]
+        BSTR POS_OPN;
+        [helpstring("אחוז שינוי פוזיציות")        
+]
+        BSTR POS_OPN_DF;
+        [helpstring("מצב ליום הבא")        
+]
+        BSTR STS_NXT_DY;
+        [helpstring("תאריך")        
+]
+        BSTR UPD_DAT;
+        [helpstring("שעה")        
+]
+        BSTR UPD_TIME;
+        [helpstring("  ")        
+]
+        BSTR FILER;
+    } K300MaofType;
+
+    typedef [uuid(24508459-0E4C-4550-A037-E7E2BF41BCF9), version(1.0), helpstring("Month Type Enumaration")]
+    enum {
+        AllMonths = 0xffffffff,
+        January = 1,
+        February = 2,
+        March = 3,
+        April = 4,
+        May = 5,
+        June = 6,
+        July = 7,
+        August = 8,
+        September = 9,
+        October = 10,
+        November = 11,
+        December = 12
+    } MonthType;
+
+    typedef [uuid(D717A43D-4447-4506-95AD-992A486B6003), version(1.0), helpstring("K300 Rezef Structure")]
+    struct tagK300RzfType {
+        [helpstring("סוג רשומה")        
+]
+        BSTR SUG_REC;
+        [helpstring("מס בורסה")        
+]
+        BSTR BNO_Num;
+        [helpstring("שם נייר")        
+]
+        BSTR BNO_NAME;
+        [helpstring("סימבול")        
+]
+        BSTR Symbol;
+        [helpstring("שיטת מסחר")        
+]
+        BSTR TRADE_METH;
+        [helpstring("מס סדורי")        
+]
+        BSTR SIDURI_Num;
+        [helpstring("שידור חוזר/תיקון")        
+]
+        BSTR RWR_VA;
+        [helpstring("MIN גודל פקודה")        
+]
+        BSTR MIN_UNIT;
+        [helpstring("גבול פקודה חריגה")        
+]
+        BSTR HARIG_NV;
+        [helpstring("שער רצפה-פתיחה")        
+]
+        BSTR MIN_PR_OPN;
+        [helpstring("שער תקרה-פתיחה")        
+]
+        BSTR MAX_PR_OPN;
+        [helpstring("שער רצפה-רציף")        
+]
+        BSTR MIN_PR_CNT;
+        [helpstring("שער תקרה-רציף")        
+]
+        BSTR MAX_PR_CNT;
+        [helpstring("שער בסיס")        
+]
+        BSTR BASIS_PRC;
+        [helpstring("קוד מצב נייר")        
+]
+        BSTR STATUS;
+        [helpstring("EX קוד")        
+]
+        BSTR EX_COD;
+        [helpstring("EX תאור קוד")        
+]
+        BSTR EX_DETAIL;
+        [helpstring("שידור חוזר/תיקון")        
+]
+        BSTR RWR_VB;
+        [helpstring("שלב מסחר")        
+]
+        BSTR shlav;
+        [helpstring("שער אחרון")        
+]
+        BSTR LAST_PRC;
+        [helpstring("סיבת הפסקת מסחר")        
+]
+        BSTR TRD_STP_N;
+        [helpstring("שעת פתיחת הפסקה")        
+]
+        BSTR STP_OPN_TM;
+        [helpstring("שידור חוזר/תיקון")        
+]
+        BSTR RWR_VD;
+        [helpstring("1 לימיט קניה")        
+]
+        BSTR LMT_BY1;
+        [helpstring("2 לימיט קניה")        
+]
+        BSTR LMT_BY2;
+        [helpstring("3 לימיט קניה")        
+]
+        BSTR LMT_BY3;
+        [helpstring("1כמות לימיט קניה")        
+]
+        BSTR LMY_BY1_NV;
+        [helpstring("2כמות לימיט קניה")        
+]
+        BSTR LMY_BY2_NV;
+        [helpstring("3כמות לימיט קניה")        
+]
+        BSTR LMY_BY3_NV;
+        [helpstring("בשוק-קניה")        
+]
+        BSTR MKT_NV_BY;
+        [helpstring("קוד בשוק-קניה")        
+]
+        BSTR MKT_NV_BY_NUM;
+        [helpstring("שידור חוזר/תיקון")        
+]
+        BSTR RWR_VE;
+        [helpstring("1 לימיט מכירה")        
+]
+        BSTR LMT_SL1;
+        [helpstring("2 לימיט מכירה")        
+]
+        BSTR LMT_SL2;
+        [helpstring("3 לימיט מכירה")        
+]
+        BSTR LMT_SL3;
+        [helpstring("1כמות לימיט מכירה")        
+]
+        BSTR LMY_SL1_NV;
+        [helpstring("2כמות לימיט מכירה")        
+]
+        BSTR LMY_SL2_NV;
+        [helpstring("3כמות לימיט מכירה")        
+]
+        BSTR LMY_SL3_NV;
+        [helpstring("בשוק-מכירה")        
+]
+        BSTR MKT_NV_SL;
+        [helpstring("קוד בשוק-מכירה")        
+]
+        BSTR MKT_NV_SL_NUM;
+        [helpstring("שידור חוזר/תיקון")        
+]
+        BSTR RWR_VF;
+        [helpstring("שער תאורטי")        
+]
+        BSTR THEOR_PR;
+        [helpstring("מחזור שער תאורטי")        
+]
+        BSTR THEOR_VL;
+        [helpstring("שידור חוזר/תיקון")        
+]
+        BSTR RWR_VG;
+        [helpstring("שער עסקה אחרונה")        
+]
+        BSTR LST_DL_PR;
+        [helpstring("שעת עסקה אחרונה")        
+]
+        BSTR LST_DL_TM;
+        [helpstring("עליה מהבסיס %")        
+]
+        BSTR LST_DF_BS;
+        [helpstring("עליה מהפתיחה %")        
+]
+        BSTR LST_DF_OPN;
+        [helpstring("מחזור עסקה אחרונה")        
+]
+        BSTR LST_DL_VL;
+        [helpstring("מחזור מתחילת היום")        
+]
+        BSTR DAY_VL;
+        [helpstring("מחזור בשח היום")        
+]
+        BSTR DAY_VL_NIS;
+        [helpstring("מספר עסקאות היום")        
+]
+        BSTR DAY_DIL_NO;
+        [helpstring("שער יומי גבוה")        
+]
+        BSTR DAY_MAX_PR;
+        [helpstring("שער יומי נמוך")        
+]
+        BSTR DAY_MIN_PR;
+        [helpstring("שם נייר אנגלי")        
+]
+        BSTR BNO_NAME_E;
+        [helpstring("סימבול אנגלי")        
+]
+        BSTR SYMBOL_E;
+        [helpstring("קוד הפסקת מסחר")        
+]
+        BSTR STP_COD;
+        [helpstring("קוד שער תא/פת/סג")        
+]
+        BSTR COD_SHAAR;
+        [helpstring("תאריך")        
+]
+        BSTR UPD_DAT;
+        [helpstring("שעה")        
+]
+        BSTR UPD_TIME;
+    } K300RzfType;
+
+    typedef [uuid(768A62AC-3D61-41F7-A439-DA65581AFB52), version(1.0), helpstring("מבנה רשומת הוראה חדשה")]
+    struct tagRezefSimpleOrder {
+        [helpstring("מספר נייר ערך")        
+]
+        int BNO;
+        [helpstring("כמות")        
+]
+        int Amount;
+        [helpstring("מחיר")        
+]
+        double price;
+        [helpstring("סניף")        
+]
+        int Branch;
+        [helpstring("חשבון")        
+]
+        int Account;
+        [helpstring("סוג פעולה")        
+]
+        OrderOperation operation;
+        [helpstring("סוג הוראה")        
+]
+        RezefOrderKind OrderKind;
+        [helpstring("הוראת שאילתא")        
+]
+        long Query;
+    } RezefSimpleOrder;
+
+    typedef [uuid(7DC7B7BF-4671-4171-A633-0D697A5F6803), version(1.0), helpstring("פעולות קניה ומכירה")]
+    enum {
+        OrderOperationNewBuy = 0,
+        OrderOperationNewSell = 1,
+        OrderOperationUpdBuy = 2,
+        OrderOperationUpdSell = 3,
+        OrderOperationDelete = 4
+    } OrderOperation;
+
+    typedef [uuid(E2A5E70B-3138-484A-A113-B8BB1640ED12), version(1.0), helpstring("סוגי פקודות ברצף")]
+    enum {
+        RezefOrderKindLMT = 0,
+        RezefOrderKindMKT = 1,
+        RezefOrderKindATC = 2,
+        RezefOrderKindLMO = 3,
+        RezefOrderKindKRN = 4,
+        RezefOrderKindJMB = 5
+    } RezefOrderKind;
+
+    typedef [uuid(67BADCB9-DD55-41EF-8D57-3C9FD785C9A1), version(1.0), helpstring("מבנה רשומת הוראה מתמשכת")]
+    struct tagRezefContinuousOrder {
+        [helpstring("מספר נייר ערך")        
+]
+        int BNO;
+        [helpstring("כמות")        
+]
+        int Amount;
+        [helpstring("מחיר")        
+]
+        double price;
+        [helpstring("סניף")        
+]
+        int Branch;
+        [helpstring("חשבון")        
+]
+        int Account;
+        [helpstring("סוג פעולה")        
+]
+        OrderOperation operation;
+        [helpstring("סוג הוראה")        
+]
+        RezefOrderKind OrderKind;
+        [helpstring("תאריך התחלה פק. מתמשכת yyyymmdd")        
+]
+        int StartDate;
+        [helpstring("תאריך סופי פק. מתמשכת yyyymmdd")        
+]
+        int EndDate;
+        [helpstring("כמות מינימום לפק. מתמשכת")        
+]
+        int MinAmount;
+        [helpstring("כמות מקסימום לפק. מתמשכת")        
+]
+        int MaxAmount;
+        [helpstring("פקודה מתמשכת לביצוע מיידי")        
+]
+        int ImmediateExecution;
+    } RezefContinuousOrder;
+
+    typedef [uuid(887F00A8-8B7E-4E2F-A7E4-486728E228B1), version(1.0), helpstring("Initial Yield Data Structure")]
+    struct tagAccountYieldInitial {
+        [helpstring("סניף")        
+]
+        int Yld_sug;
+        [helpstring("מספר חשבון")        
+]
+        int Yld_id;
+        [helpstring("ני'ע")        
+]
+        int Yld_bno;
+        [helpstring("תאריך")        
+]
+        int Yld_date;
+        [helpstring("שיערך יומי")        
+]
+        double Yld_vl_dd;
+        [helpstring("תשואה יומית")        
+]
+        double Yld_yld_dd;
+        [helpstring("שיערך חודשי")        
+]
+        double Yld_vl_mm;
+        [helpstring("תשואה חודשית")        
+]
+        double Yld_yld_mm;
+        [helpstring("שיערך 12 חודשים")        
+]
+        double Yld_vl_12;
+        [helpstring("תשואה 12 חודשים")        
+]
+        double Yld_yld_12;
+        [helpstring("שיערך 3 חודשים")        
+]
+        double Yld_vl_3m;
+        [helpstring("תשואה 3 חודשים")        
+]
+        double Yld_yld_3m;
+        [helpstring("שיערך שנתי")        
+]
+        double Yld_vl_yy;
+        [helpstring("תשואה שנתית")        
+]
+        double Yld_yld_yy;
+    } AccountYieldInitial;
+
+    typedef [uuid(4D1CADC3-173E-4DF9-90A9-F9883E2AB861), version(1.0), helpstring(" Yield Data Structure by Request")]
+    struct tagAccountYieldByRequirement {
+        [helpstring("סניף")        
+]
+        int Yld_sug;
+        [helpstring("מספר חשבון")        
+]
+        int Yld_id;
+        [helpstring("ני'ע")        
+]
+        int Yld_bno;
+        [helpstring("מונה")        
+]
+        int Yld_count;
+        [helpstring("תאריך")        
+]
+        int Yld_date;
+        [helpstring("שיערך")        
+]
+        double Yld_vl_dd;
+        [helpstring("תשואה")        
+]
+        double Yld_yld_dd;
+    } AccountYieldByRequirement;
+
+    typedef [uuid(33548B33-F643-43C0-AD93-C87F23D06E15), version(1.0), helpstring("סוג דרישת נתוני תשואה")]
+    enum {
+        YieldDataMonthbyDay = 1,
+        YieldDataYearbyMonth = 2,
+        YieldDataTwelveMonths = 3,
+        YieldData5YearsbyYear = 4,
+        YieldDataYearbyQuater = 5
+    } YieldDataType;
+
+    typedef [uuid(C9BB5DB8-D080-4CB3-9AAC-7CF20F45283C), version(1.0), helpstring(" Detailed Yield Data Structure")]
+    struct tagAccountYieldDetailed {
+        [helpstring("סניף")        
+]
+        int Yld_sug;
+        [helpstring("מספר חשבון")        
+]
+        int Yld_id;
+        [helpstring("ני'ע")        
+]
+        int Yld_bno;
+        [helpstring("תאריך")        
+]
+        int Yld_date;
+        [helpstring("שיערך")        
+]
+        double Yld_vl_dd;
+        [helpstring("תשואה")        
+]
+        double Yld_yld_dd;
+    } AccountYieldDetailed;
+
+    typedef [uuid(171EF2F6-6CF2-46F5-9065-E5591162C7BB), version(1.0), helpstring("יתרת ניירות פר אופציה")]
+    struct tagNvPerOption {
+        [helpstring("מספר נייר ערך")        
+]
+        int BNO;
+        [helpstring("כמות")        
+]
+        int NV;
+    } NvPerOption;
+
+    [
+      uuid(1B9BDD96-84A2-4D73-8EF5-C1BA2252BDE7),
+      helpstring("K300 Class")
+    ]
+    coclass K300 {
+        [default] interface IK300;
+        [default, source] interface IK300Event;
+    };
+
+    [
+      odl,
+      uuid(259FD37B-C3D0-4933-BF7C-DB646A625274),
+      helpstring("IK300 Interface"),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface IK300 : IDispatch {
+        [id(0x00000001), helpstring("Retrieves the MAOF records according to the last time and option number. If no last time is specified the updated records are retrieved. If no option number is specified all options are retrieved"), helpcontext(0x000007dd)]
+        HRESULT GetMAOF(
+                        [in, out] SAFEARRAY(K300MaofType)* vecRecords, 
+                        [in, out] BSTR* strLastTime, 
+                        [in] BSTR strOptionNumber, 
+                        [in, optional, defaultvalue(-1)] MadadTypes strMadad, 
+                        [out, retval] long* retVal);
+        [id(0x0000001e), helpstring("Retrieves the MAOF records (as a flat string) according to the last time and option number. If no last time is specified the updated records are retrieved. If no option number is specified all options are retrieved"), helpcontext(0x000007dd)]
+        HRESULT GetMAOFRaw(
+                        [in, out] SAFEARRAY(BSTR)* vecRecords, 
+                        [in, out] BSTR* strLastTime, 
+                        [in] BSTR strOptionNumber, 
+                        [in, optional, defaultvalue(-1)] MadadTypes strMadad, 
+                        [out, retval] long* retVal);
+        [id(0x00000002), helpstring("מחזיר רשימת נתוני נכסי בסיס. ניתן לסנן לפי קוד נכס בסיס"), helpcontext(0x000007db)]
+        HRESULT GetBaseAssets(
+                        [out] SAFEARRAY(BaseAssetInfo)* psaRecords, 
+                        [in, optional, defaultvalue(-1)] long BaseAssetCode, 
+                        [out, retval] long* retVal);
+        [id(0x00000003), helpstring("Retrieves a list of options and their details"), helpcontext(0x000007dc)]
+        HRESULT GetTradeOptions(
+                        [in, out] SAFEARRAY(BSTR)* psaStrRecords, 
+                        [in, out] long* retVal);
+        [id(0x00000004), helpstring("Calculates scenarios for all options based on current madad and IV"), helpcontext(0x000007d9)]
+        HRESULT CalculateScenarios([out, retval] VARIANT_BOOL* retVal);
+        [id(0x00000005), helpstring("Retrieves Rezef records from the specified time for the speicifed stock. If zero strings are passed, all records are returned"), helpcontext(0x000007de)]
+        HRESULT GetRezef(
+                        [in, out] SAFEARRAY(K300RzfType)* vecStrRecords, 
+                        [in, out] BSTR* strLastTime, 
+                        [in, optional, defaultvalue("00000000")] BSTR strStockNumber, 
+                        [in, optional, defaultvalue(-1)] MadadTypes strMadad, 
+                        [out, retval] long* retVal);
+        [id(0x0000001d), helpstring("Retrieves Rezef records (as a falt string) from the specified time for the speicifed stock. If zero strings are passed, all records are returned"), helpcontext(0x000007de)]
+        HRESULT GetRezefRaw(
+                        [in, out] SAFEARRAY(BSTR)* vecStrRawRecords, 
+                        [in, out] BSTR* strLastTime, 
+                        [in, optional, defaultvalue("00000000")] BSTR strStockNumber, 
+                        [in, optional, defaultvalue(-1)] MadadTypes strMadad, 
+                        [out, retval] long* retVal);
+        [id(0x00000006), helpstring("Retrieves the list of indexes and their details")]
+        HRESULT GetIndexes(
+                        [in, out] SAFEARRAY(IndexInfoType)* psaStrRecords, 
+                        [out, retval] long* retVal);
+        [id(0x00000007), helpstring("Retrieves the list of indexes structures")]
+        HRESULT GetIndexStructure(
+                        [in, out] SAFEARRAY(BSTR)* psaStrRecords, 
+                        [out, retval] long* retVal);
+        [id(0x00000008), helpstring("Retrieves the list of Rezef stocks")]
+        HRESULT GetStocksRZF(
+                        [in, out] SAFEARRAY(BSTR)* psaStrRecords, 
+                        [out, retval] long* retVal);
+        [id(0x00000009), helpstring("Stops the push updator")]
+        HRESULT StopUpdate(long pnID);
+        [id(0x0000000a), helpstring("Initiate a connection point to VB")]
+        HRESULT StartStream(
+                        [in, optional, defaultvalue(0)] K300StreamType streamType, 
+                        [in, optional, defaultvalue("00000000")] BSTR strStockNumber, 
+                        [in, optional, defaultvalue(-1)] MadadTypes strMadad, 
+                        [in, optional, defaultvalue(1)] long withEvents, 
+                        [out, retval] long* pnID);
+        [id(0x0000000b), helpstring("Retrieves Stock History")]
+        HRESULT GetStockHistory(
+                        [in, out] SAFEARRAY(BSTR)* psaStrRecords, 
+                        [in] BSTR StockNumber, 
+                        [out, retval] long* retVal);
+        [id(0x0000000c), helpstring("Retrieves Stock Values")]
+        HRESULT GetStockValue(
+                        [in, out] SAFEARRAY(BSTR)* psaStrRecords, 
+                        [in, optional, defaultvalue("00000000")] BSTR strLastTime, 
+                        [out, retval] long* retVal);
+        [id(0x0000000d), helpstring("Retrieves Statistics information")]
+        HRESULT GetStatistics(
+                        [in, out] SAFEARRAY(K300STSType)* psaStrRecords, 
+                        [out, retval] long* retVal);
+        [id(0x0000000e), helpstring("Retrieves Statistics information")]
+        HRESULT GetMadadHistory(
+                        [in, out] SAFEARRAY(K300MadadHistType)* psaStrRecords, 
+                        [in, optional, defaultvalue("000")] BSTR MadadCode, 
+                        [in, optional, defaultvalue("-1")] BSTR strLastTime, 
+                        [out, retval] long* retVal);
+        [id(0x0000000f), helpstring("Retrieves Bank Stocks")]
+        HRESULT GetMaofStocks(
+                        [in, out] SAFEARRAY(StockPartInIndexType)* psaStrRecords, 
+                        [in, optional, defaultvalue(0)] MadadTypes MadadSymbol, 
+                        [out, retval] long* retVal);
+        [id(0x00000010), helpstring("Retrieves Stock Stage")]
+        HRESULT GetStockStage(
+                        [in, out] SAFEARRAY(StockStageType)* psaStrRecords, 
+                        [in] BSTR StockNumber, 
+                        [out, retval] long* retVal);
+        [id(0x00000011), helpstring("Retrieves Rezef Const Stock")]
+        HRESULT GetConstStock(
+                        [in, out] SAFEARRAY(ConsStockType)* psaStrRecords, 
+                        [out, retval] long* retVal);
+        [id(0x00000012), helpstring("Retrieves Maof CNT")]
+        HRESULT GetMaofCnt(
+                        [in, out] SAFEARRAY(BSTR)* psaStrRecords, 
+                        [in] BSTR strBranch, 
+                        [in] BSTR strHelpAccount, 
+                        [in] BSTR strTimeOrders, 
+                        [in] BSTR strTimeK300, 
+                        [in] BSTR strBaseAsset, 
+                        [in] BSTR strOnlyK300, 
+                        [in] BSTR strOnlyOrders, 
+                        [in] BSTR strOptionMonth, 
+                        [out, retval] long* retVal);
+        [id(0x00000013), helpstring("Retrieves Rezef CNT")]
+        HRESULT GetRzfCNT(
+                        [in, out] SAFEARRAY(BSTR)* psaStrRecords, 
+                        [in] BSTR strOPName, 
+                        [in] BSTR strBranch, 
+                        [in] BSTR strHelpAccount, 
+                        [in] BSTR strTimeOrders, 
+                        [in] BSTR strTimeK300, 
+                        [in] BSTR strBaseAsset, 
+                        [in] BSTR strBaseAssetIndication, 
+                        [out, retval] long* retVal);
+        [id(0x0000001c), helpstring("Retrieves the Option records according to the last time and option number. If no last time is specified the updated records are retrieved. If no option number is specified all options are retrieved"), helpcontext(0x000007dd)]
+        HRESULT GetMaofScenarios(
+                        [in, out] SAFEARRAY(K300MaofScenariosType)* vecRecords, 
+                        [in] BSTR strOptionNumber, 
+                        [in, optional, defaultvalue(-1)] MadadTypes strMadad, 
+                        [out, retval] long* retVal);
+        [id(0x00000014), propput, helpstring("The Operation To Be Used In The CNT Request(VB/VBALL)")]
+        HRESULT CNTOPName([in] BSTR rhs);
+        [id(0x00000015), propput, helpstring("The Branch Number To Be Used In The CNT Request")]
+        HRESULT CNTBranch([in] BSTR rhs);
+        [id(0x00000016), propput, helpstring("The HelpAccount Number To Be Used In The CNT Request")]
+        HRESULT CNTHelpAccount([in] BSTR rhs);
+        [id(0x00000017), propput, helpstring("The BaseAsset ID To Be Used In The CNT Request")]
+        HRESULT CNTBaseAsset([in] BSTR rhs);
+        [id(0x00000018), propput, helpstring("The BaseAssetIndication To Be Used In The CNT Request('Y'/' ')")]
+        HRESULT CNTBaseAssetIndication([in] BSTR rhs);
+        [id(0x00000019), propput, helpstring("Inidication To Be Used In The CNT Request('Y'/'N')")]
+        HRESULT CNTOnlyK300([in] BSTR rhs);
+        [id(0x0000001a), propput, helpstring("Inidication To Be Used In The CNT Request('Y'/'N')")]
+        HRESULT CNTOnlyOrders([in] BSTR rhs);
+        [id(0x0000001b), propput, helpstring("The Months To Be Used In The CNT Request")]
+        HRESULT CNTOptionMonth([in] BSTR rhs);
+        [id(0x0000001f), helpstring("Retrieves a list of options and their details"), helpcontext(0x000007dc)]
+        HRESULT GetShortTradeOptions(
+                        [in, out] SAFEARRAY(TradeOptionType)* psaStrRecords, 
+                        [out, retval] long* retVal);
+        [id(0x00000020), helpstring("משיכת נתוני שוק של אופציות ומדדים מקו 300. ניתן לסנן לפי סוג המדד או מספר אופציה. אם שניהם ניתנים, הסינון יתבצע לפי האופציה. נתוני שוק מתעדכנים מהמחשב  הראשי או משרתי ההפצה, בהתאם לתצורת ההתקנה")]
+        HRESULT GetK300MF(
+                        [out] SAFEARRAY(K300MaofType)* vecRecords, 
+                        [in, out] BSTR* LastTime, 
+                        [in] BSTR BNO, 
+                        [in, optional, defaultvalue(-1)] BaseAssetTypes strMadad, 
+                        [in, optional, defaultvalue(-1)] MonthType Month, 
+                        [out, retval] long* retVal);
+        [id(0x00000024), helpstring("משיכת נתוני שוק של מניות מקו 300. ניתן לסנן לפי שייכות למדד, סוג המנייה או מספר המניה, לפי סדר קדימויות זה. נתוני שוק מתעדכנים מהמחשב  הראשי או משרתי ההפצה, בהתאם לתצורת ההתקנה")]
+        HRESULT GetK300RZ(
+                        [out] SAFEARRAY(K300RzfType)* vecRecords, 
+                        [in, out] BSTR* LastTime, 
+                        [in, optional, defaultvalue("00000000")] BSTR BNO, 
+                        [in, optional, defaultvalue(-1)] StockKind kind, 
+                        [in, optional, defaultvalue(-1)] MadadTypes madadType, 
+                        [out, retval] long* retVal);
+        [id(0x00000023), helpstring("משיכת מדדים מקו 300. ניתן לסנן לפי מספר המדד. נתוני שוק מתעדכנים מהמחשב הראשי או משרתי ההפצה, בהתאם לתצורת ההתקנה")]
+        HRESULT GetK300Madad(
+                        [out] SAFEARRAY(K300MadadType)* vecRecords, 
+                        [in, optional, defaultvalue("0")] BSTR BNO, 
+                        [out, retval] long* retVal);
+        [id(0x00000021), helpstring("התחל זרימת נתוני שוק לתוך הטסקבר מהמחשב הראשי או מהשרתים. ערך מוחזר 0 מציין הצלחה")]
+        HRESULT K300StartStream(
+                        [in] K300StreamType streamType, 
+                        [out, retval] long* retVal);
+        [id(0x00000022), helpstring("הפסק זרימת נתוני שוק לתוך הטסקבר מהמחשב הראשי או מהשרתים. ערך מוחזר 0 מציין הצלחה")]
+        HRESULT K300StopStream(
+                        [in] K300StreamType streamType, 
+                        [out, retval] long* retVal);
+        [id(0x00000025), helpstring("שומר את כל אירועי השוק בקובץ. מקבל מחיצה, בה יישמרו הקבצים, שם קובץ, מספר אירועים לכל קובץ.")]
+        HRESULT CreateK300EventsFile(
+                        [in] BSTR CacheFolder, 
+                        [in] BSTR DataFileName, 
+                        [in] long EventsPerFile, 
+                        [in] K300StreamType streamType, 
+                        [out] BSTR* ErrorMessage, 
+                        [out, retval] long* retVal);
+        [id(0x00000026), helpstring("רשימת אגחי שחר המרכיבים חוזה שחר")]
+        HRESULT GetShacharBondsInFuture(
+                        [in] BSTR BNO, 
+                        [out] SAFEARRAY(ShacharBondInFutureType)* vecRecords, 
+                        [out, retval] long* retVal);
+        [id(0x00000027), helpstring("רשימת נתוני סוג חומר חמש-מאות")]
+        HRESULT GetSH500(
+                        [in, out] SAFEARRAY(SH500Type)* psaStrRecords, 
+                        [in] BSTR Query, 
+                        [out, retval] long* retVal);
+        [id(0x00000028), propput, helpstring("קביעת מזהה לצורך החלת הרשאות על קו 300")]
+        HRESULT K300SessionId([in] long rhs);
+        [id(0x00000029), helpstring("סוג חומר 161")]
+        HRESULT GetSH161(
+                        [in, out] SAFEARRAY(SH161Type)* vecRecords, 
+                        [in] MadadTypes MadadSymbol, 
+                        [out, retval] long* retVal);
+        [id(0x0000002a), helpstring("Retrieves the base assets info")]
+        HRESULT GetBaseAssets2(
+                        [out] SAFEARRAY(BaseAssetType)* psaRecords, 
+                        [in, optional, defaultvalue(-1)] long BaseAssetCode, 
+                        [out, retval] long* retVal);
+        [id(0x0000002b), helpstring("Retrieves the MAOF records according to the base asset number")]
+        HRESULT GetMAOFByBaseAsset(
+                        [in, out] SAFEARRAY(K300MaofType)* vecRecords, 
+                        [in, optional, defaultvalue(-1)] long baseAssetBno, 
+                        [out, retval] long* retVal);
+        [id(0x0000002c)]
+        HRESULT GetRezefByIndex(
+                        [in, out] SAFEARRAY(K300RzfType)* vecStrRecords, 
+                        [in, optional, defaultvalue(-1)] long indexBno, 
+                        [out, retval] long* retVal);
+    };
+
+    typedef [uuid(9690C0EF-2F33-4F1F-A4D2-C6604E0B614D), version(1.0), helpstring("Madad Type Enumaration")]
+    enum {
+        AllMadad = 0xffffffff,
+        TLV25 = 0,
+        TLV75 = 1,
+        TLTK = 2,
+        TLV100 = 3,
+        BANK = 4,
+        DOLLAR = 5,
+        BINUI = 6,
+        TLVFIN = 7,
+        TLVNADLAN15 = 8,
+        YETER30 = 9,
+        TELDIV20 = 10,
+        TELBOND = 11,
+        YETER120 = 12,
+        YETER50 = 13,
+        MAALE = 14,
+        TELBOND40 = 15,
+        TELBOND60 = 16,
+        GOV_FIXED0 = 17,
+        GOV_FIXED2 = 18,
+        GOV_FIXED5 = 19,
+        GOV_CHG0 = 20,
+        GOV_CHG5 = 21,
+        MAKAM = 22,
+        CURRENCYLNKD = 23
+    } MadadTypes;
+
+    typedef [uuid(24508459-EFB3-4C73-A616-D008A5422DE7), version(1.0), helpstring("פרטי נכס בסיס")]
+    struct tagBaseAssetInfo {
+        [helpstring("קוד נכס בסיס")        
+]
+        int BaseAssetCode;
+        [helpstring("מספר ימים לפקיעה")        
+]
+        int DaysToExp;
+        [helpstring("תאריך פקיעה")        
+]
+        int ExpDate;
+        [helpstring("ריבית")        
+]
+        double Interest;
+        [helpstring("סטיית תקן")        
+]
+        double IV;
+        [helpstring("דיבידנד")        
+]
+        double Dividend;
+        [helpstring("אחוז שינוי במדד")        
+]
+        double MadadChange;
+        [helpstring("אחוז שינוי בסטיית תקן")        
+]
+        double IVChange;
+        [helpstring("מדד")        
+]
+        double Madad;
+    } BaseAssetInfo;
+
+    typedef [uuid(A479FFA8-4B4C-4042-8D03-6530FA4ECC26), version(1.0), helpstring("Indexes Info Type")]
+    struct tagIndexInfoType {
+        [helpstring("סוג רשומה")        
+]
+        BSTR SUG_REC;
+        [helpstring("מספר טבלה")        
+]
+        BSTR TBL_NO;
+        [helpstring("מספר שורה בטבלה")        
+]
+        BSTR LINE_NO;
+        [helpstring("מספר עמודה בטבלה")        
+]
+        BSTR COL_NO;
+        [helpstring("קוד מדד")        
+]
+        BSTR COD_MDD;
+        [helpstring("שם המדד")        
+]
+        BSTR NAME_MDD;
+        [helpstring("ערך המדד")        
+]
+        BSTR VAL_MDD;
+        [helpstring("אחוז השינוי היומי")        
+]
+        BSTR CHG_PCNT;
+        [helpstring("מגמת אחוז השינוי")        
+]
+        BSTR CHG_DIRCT;
+                
+BSTR FIL1;
+    } IndexInfoType;
+
+    typedef [uuid(A71C84F9-600D-4869-88F9-E14ED5FFB0CA), version(1.0), helpstring("K300 Stream types enumaration")]
+    enum {
+        MaofStream = 48,
+        RezefStream = 49,
+        MaofCNTStream = 50,
+        RezefCNTStream = 51,
+        IndexStream = 52
+    } K300StreamType;
+
+    typedef [uuid(D717A439-4447-4506-95AD-992A486B6003), version(1.0), helpstring("RLS Structure")]
+    struct tagK300STSType {
+        [helpstring("{")        
+]
+        BSTR POTEH;
+        [helpstring("סוג רשומה")        
+]
+        BSTR SUG_REC;
+        [helpstring("שיטת מסחר")        
+]
+        BSTR TRADE_METH;
+        [helpstring("מספר עסקאות")        
+]
+        BSTR DIL_NO;
+        [helpstring("סה"כ מחזור")        
+]
+        BSTR TOT_MAHZOR;
+        [helpstring("תמורה לכל השוק")        
+]
+        BSTR VL_NIS_MKT;
+        [helpstring("תמורה לני"ע שעלו")        
+]
+        BSTR VL_NIS_UP;
+        [helpstring("תמורה לני"ע שירדו")        
+]
+        BSTR VL_NIS_DN;
+        [helpstring("תמורה לני"ע ללא שינוי")        
+]
+        BSTR VL_NIS_STT;
+        [helpstring("מספר ני"ע שעלו")        
+]
+        BSTR BNO_UP;
+        [helpstring("מספר ני"ע שירדו")        
+]
+        BSTR BNO_DN;
+        [helpstring("מספר ני"ע ללא שינוי")        
+]
+        BSTR BNO_STT;
+        [helpstring("שעת המערכת")        
+]
+        BSTR SYS_TIME;
+        [helpstring("FIL")        
+]
+        BSTR FIL;
+        [helpstring("}")        
+]
+        BSTR SOGER;
+        [helpstring("תאריך עדכון")        
+]
+        BSTR UPD_DAT;
+        [helpstring("זמן עדכון")        
+]
+        BSTR UPD_TIME;
+    } K300STSType;
+
+    typedef [uuid(D5D1A5B2-8EB8-4A88-8592-11AD4446CDF2), version(1.0), helpstring("Madad History")]
+    struct tagK300MadadHistType {
+        [helpstring("פותח")        
+]
+        BSTR POTEH;
+        [helpstring("סוג רשומה")        
+]
+        BSTR SUG_REC;
+        [helpstring("קוד מדד")        
+]
+        BSTR MDD_COD;
+        [helpstring("שם מדד")        
+]
+        BSTR MDD_NAME;
+        [helpstring("סוג מדד")        
+]
+        BSTR MDD_SUG;
+        [helpstring("מספר סדורי")        
+]
+        BSTR MDD_NUM;
+        [helpstring("מדד")        
+]
+        BSTR MDD;
+        [helpstring("שינוי %")        
+]
+        BSTR MDD_DF;
+        [helpstring("זמן חישוב")        
+]
+        BSTR CALC_TIME;
+        [helpstring("פילר")        
+]
+        BSTR FIL;
+        [helpstring("סוגר")        
+]
+        BSTR SOGER;
+        [helpstring("תאריך עדכון")        
+]
+        BSTR UPD_DAT;
+        [helpstring("זמן עדכון")        
+]
+        BSTR UPD_TIME;
+        [helpstring("שער בסיס")        
+]
+        BSTR MDD_BASIS;
+    } K300MadadHistType;
+
+    typedef [uuid(94914BF5-A714-4AE7-BF5A-3CDE03B93BD4), version(1.0), helpstring("Stock Part In Index Type")]
+    struct tagStockPartInIndexType {
+        [helpstring("מספר נייר ערך")        
+]
+        BSTR BNO_NO;
+        [helpstring("שם נייר ערך")        
+]
+        BSTR BNO_NAME;
+        [helpstring("מחיר")        
+]
+        BSTR PRC;
+        [helpstring("הון רשום")        
+]
+        BSTR HON_RASHUM;
+        [helpstring("אחוז במדד")        
+]
+        BSTR PCNT;
+    } StockPartInIndexType;
+
+    typedef [uuid(D717A433-4447-4506-95AD-992A486B6003), version(1.0), helpstring("Stocks Stage Structure")]
+    struct tagStockStageType {
+        [helpstring("מספר נייר ערך")        
+]
+        BSTR BNO_NO;
+        [helpstring("שיטת מסחר")        
+]
+        BSTR TRADE_METH;
+        [helpstring("שלב מסחר")        
+]
+        BSTR TRADE_STAGE;
+        [helpstring("מצב ני"ע")        
+]
+        BSTR STOCK_STATE;
+        [helpstring("סיבת הפסקת מסחר")        
+]
+        BSTR RSN_TRADE_STP;
+        [helpstring("שעת הפסקת מסחר")        
+]
+        BSTR TM_TRADE_STP;
+        [helpstring("שער בסיס לשלב")        
+]
+        BSTR BASE_RATE_STG;
+    } StockStageType;
+
+    typedef [uuid(D717A434-4447-4506-95AD-992A486B6003), version(1.0), helpstring("Constant Stocks Structure")]
+    struct tagConsStockType {
+                
+BSTR TRD_DAT;
+                
+BSTR BNO_NO;
+                
+BSTR BNO_NAME;
+                
+BSTR Symbol;
+                
+BSTR SUG_BNO;
+                
+BSTR ANAF;
+                
+BSTR TRADE_METH;
+                
+BSTR UNIT_OPEN;
+                
+BSTR UNIT_CONT;
+                
+BSTR UNIT_CLOS;
+                
+BSTR LMT_UP_OPN;
+                
+BSTR LMT_DN_OPN;
+                
+BSTR LMT_UP_CNT;
+                
+BSTR LMT_DN_CNT;
+                
+BSTR NV_LMT_ERR;
+                
+BSTR NV_LMT_FTL;
+                
+BSTR HON_RASHUM;
+                
+BSTR LVL1;
+                
+BSTR LVL2;
+                
+BSTR LVL3;
+                
+BSTR LVL4;
+                
+BSTR LVL5;
+                
+BSTR LVL6;
+                
+BSTR ENG_NAME;
+                
+BSTR RATING_MRG;
+                
+BSTR RATING_CRT;
+                
+BSTR RISK_COD;
+                
+BSTR DIRUG_AG;
+                
+BSTR BASIS_PRC;
+                
+BSTR BASIS_YLD;
+                
+BSTR MDD_MAOF;
+                
+BSTR MDD_TLV100;
+                
+BSTR UNIT_CONT_8;
+                
+BSTR RDM_DAYS;
+                
+BSTR MDD_TLV75;
+                
+BSTR MDD_TL_TK;
+                
+BSTR MDD_BANKS;
+    } ConsStockType;
+
+    typedef [uuid(F61FBBEC-19FE-462C-BD81-5D1F6550BC54), version(1.0), helpstring("Maof Options and Scenarious")]
+    struct tagK300MaofScenariosType {
+                
+int nBaseAsset;
+                
+double dStrike;
+                
+int nDaysToExpiary;
+                
+int nExpMonth;
+                
+int nNumber;
+                
+int nOptType;
+                
+double dLastPrice;
+                
+double dScenarios[45];
+    } K300MaofScenariosType;
+
+    typedef [uuid(ED565CC0-E9FA-4C49-A63C-744C780D0088), version(1.0), helpstring("Trade Option Type")]
+    struct tagTradeOptionType {
+        [helpstring("מספר נייר")        
+]
+        int BNO;
+        [helpstring("מחיר מימוש")        
+]
+        double ExpPrice;
+        [helpstring("תאריך מימוש")        
+]
+        BSTR ExpDate;
+        [helpstring("קוד נכס בסיס")        
+]
+        int BaseAsset;
+        [helpstring("רכש/מכר/עתידי")        
+]
+        BSTR OpType;
+        [helpstring("שם נייר")        
+]
+        BSTR BnoName;
+    } TradeOptionType;
+
+    typedef [uuid(24508459-71DF-41F8-9D02-30D6F692FD9D), version(1.0), helpstring("סוגי מנייה")]
+    enum {
+        StockKindAll = 0xffffffff,
+        StockKindMenaya = 0,
+        StockKindAgach = 1,
+        StockKindMakam = 2,
+        StockKindKeren = 3
+    } StockKind;
+
+    typedef [uuid(D717A43E-6DFD-4521-9D14-F2D5D28A39EF), version(1.0), helpstring("K300 Maof Structure")]
+    struct tagK300MadadType {
+                
+BSTR SUG_RC;
+                
+BSTR BNO_N;
+                
+BSTR FIL1_VK;
+                
+BSTR MDD_COD;
+                
+BSTR MDD_SUG;
+                
+BSTR MDD_N;
+                
+BSTR FIL2_VK;
+                
+BSTR MDD_NAME;
+                
+BSTR Madad;
+                
+BSTR FIL3_VK;
+                
+BSTR MDD_DF;
+                
+BSTR CALC_TIME;
+                
+BSTR FIL6_VK;
+                
+BSTR UPD_DAT;
+                
+BSTR UPD_TIME;
+    } K300MadadType;
+
+    typedef [uuid(24508459-A714-4AE7-BF5A-3CDE03B93BD4), version(1.0), helpstring("נייר אגח שחר המרכיב חוזה שחר")]
+    struct tagShacharBondInFutureType {
+        [helpstring("מספר נייר חוזה")        
+]
+        BSTR BNO_Future;
+        [helpstring("מספר נייר אגח")        
+]
+        BSTR BNO_Bond;
+        [helpstring("מקדם המרה")        
+]
+        BSTR ConvCoeff;
+        [helpstring("ריבית צבורה")        
+]
+        BSTR AccumInterest;
+    } ShacharBondInFutureType;
+
+    typedef [uuid(24508459-4437-4506-95AD-992A486B6003), version(1.0), helpstring("SH500 Stocks Structure")]
+    struct tagSH500Type {
+                
+BSTR TRD_DAT;
+                
+BSTR BNO_NO;
+                
+BSTR BNO_NAME;
+                
+BSTR Symbol;
+                
+BSTR SUG_BNO;
+                
+BSTR ANAF;
+                
+BSTR TRADE_METH;
+                
+BSTR DAY_WEEK;
+                
+BSTR HAFSAKA;
+                
+BSTR STR_TM_PRE;
+                
+BSTR STR_TM_OPN;
+                
+BSTR STR_TM_CLS;
+                
+BSTR END_TM;
+                
+BSTR UNIT_OPEN;
+                
+BSTR UNIT_CONT;
+                
+BSTR UNIT_CLOS;
+                
+BSTR LMT_UP_OPN;
+                
+BSTR LMT_DN_OPN;
+                
+BSTR LMT_UP_CNT;
+                
+BSTR LMT_DN_CNT;
+                
+BSTR NV_LMT_ERR;
+                
+BSTR NV_LMT_FTL;
+                
+BSTR MDR;
+                
+BSTR SUG_MANPIK;
+                
+BSTR MANPIK_NUM;
+                
+BSTR HON_RASHUM;
+                
+BSTR SORT_NUM;
+                
+BSTR TAX_COD;
+                
+BSTR TAX_PCNT;
+                
+BSTR MISTNM_COD;
+                
+BSTR MAOF_COD;
+                
+BSTR LVL1;
+                
+BSTR LVL2;
+                
+BSTR LVL3;
+                
+BSTR LVL4;
+                
+BSTR LVL5;
+                
+BSTR LVL6;
+                
+BSTR ENG_NAME;
+                
+BSTR RATING_MRG;
+                
+BSTR RATING_CRT;
+                
+BSTR RISK_COD;
+                
+BSTR DIRUG_AG;
+                
+BSTR TRAD_ORDR;
+                
+BSTR BASIS_PRC;
+                
+BSTR BASIS_YLD;
+                
+BSTR MDD_MAOF;
+                
+BSTR MDD_TLV100;
+                
+BSTR UNIT_CONT_8;
+                
+BSTR RDM_DAYS;
+                
+BSTR MDD_TLV75;
+                
+BSTR MDD_TL_TK;
+                
+BSTR MDD_BANKS;
+                
+BSTR COD_RISHUM;
+                
+BSTR MDD_ITR30;
+                
+BSTR MDD_FNNC;
+                
+BSTR MDD_NDLN15;
+                
+BSTR MDD_BINUI;
+    } SH500Type;
+
+    typedef [uuid(3A1EFDB9-CB6F-4856-8917-4A0AE2F88472), version(1.0), helpstring("SH500 Stocks Structure")]
+    struct tagSH161Type {
+        [helpstring("מספר נייר ערך")        
+]
+        long BNO;
+        [helpstring("שם נייר ערך")        
+]
+        BSTR BNO_NAME;
+        [helpstring("מחיר")        
+]
+        double PRC;
+        [helpstring("הון רשום")        
+]
+        double HON_RASHUM;
+        [helpstring("אחוז")        
+]
+        double PCNT;
+        [helpstring("כמות מינימלית")        
+]
+        long MIN_NV;
+        [helpstring("מספר מניות במדד = מממ")        
+]
+        double BNO_IN_MDD;
+        [helpstring("אחוז אחזקות בציבור")        
+]
+        double PUBLIC_PRCNT;
+        [helpstring("כמות צפה = מממ* אחוז אחזקות בציבור")        
+]
+        double NV_TZAFA;
+    } SH161Type;
+
+    typedef [uuid(24508459-8615-45AA-818C-8BA7021F580A), version(1.0), helpstring("base assets info")]
+    struct tagBaseAssetType {
+        [helpstring("base asset code")        
+]
+        int BaseAssetCode;
+        [helpstring("base asset bno")        
+]
+        int BNO;
+        [helpstring("currency code")        
+]
+        int nCurr;
+        [helpstring("base asset type")        
+]
+        BSTR BaseAssetKind;
+        [helpstring("trade method")        
+]
+        BSTR TradeMethod;
+        [helpstring("morning value")        
+]
+        double Value;
+        [helpstring("interest")        
+]
+        double Interest;
+        [helpstring("dividend")        
+]
+        double Dividend;
+        [helpstring("standard deviation")        
+]
+        double StdIv;
+        [helpstring("value change")        
+]
+        double ValueChange;
+        [helpstring("standard dev change")        
+]
+        double StdIdChange;
+        [helpstring("value multiplier")        
+]
+        double Mult;
+        [helpstring("any derivative expiration")        
+]
+        int ExpiresToday;
+        [helpstring("nearest expiration date")        
+]
+        int ExpDate;
+        [helpstring("days to expiration date")        
+]
+        int ExpDays;
+        [helpstring("hebrew name")        
+]
+        BSTR NameHeb;
+        [helpstring("english name")        
+]
+        BSTR NameEng;
+    } BaseAssetType;
+
+    [
+      odl,
+      uuid(3078E250-D427-454F-800D-71A105D64A18),
+      helpstring("IK300Event Interface"),
+      oleautomation
+    ]
+    interface IK300Event : IDispatch {
+        HRESULT _stdcall FireMaof(
+                        SAFEARRAY(K300MaofType)* psaStrRecords, 
+                        long* nRecords);
+        HRESULT _stdcall FireRezef(
+                        SAFEARRAY(K300RzfType)* psaStrRecords, 
+                        long* nRecords);
+        HRESULT _stdcall FireMaofCNT(
+                        SAFEARRAY(BSTR)* psaStrRecords, 
+                        long* nRecords);
+        HRESULT _stdcall FireRezefCNT(
+                        SAFEARRAY(BSTR)* psaStrRecords, 
+                        long* nRecords);
+    };
+
+    [
+      uuid(24C6F384-7154-4801-BE39-BE0C6874FEA1),
+      helpstring("Funds Class")
+    ]
+    coclass Funds {
+        [default] interface IFunds;
+    };
+
+    [
+      odl,
+      uuid(C9B4F1EB-D07A-4735-BA08-BC5F0230ECAD),
+      helpstring("IFunds Interface"),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface IFunds : IDispatch {
+        [id(0x00000001), helpstring("קבלת יצירות ופידיונות של קרנות נאמנות")]
+        HRESULT GetKrnBizuim(
+                        [in, out] SAFEARRAY(KrnBizuimType)* psaStrRecords, 
+                        [in] BSTR strDateFrom, 
+                        [in] BSTR strDateTo, 
+                        [in] BSTR strBNO_NO, 
+                        [in] BSTR strMember, 
+                        [out, retval] long* retVal);
+        [id(0x00000002), helpstring("קבלת רשימת ניירות קרן")]
+        HRESULT GetKranot(
+                        [in, out] SAFEARRAY(KerenBasicType)* psaStrRecords, 
+                        [in] BSTR strBNO_NO, 
+                        [out] BSTR* ERR_MSG, 
+                        [out, retval] long* retVal);
+        [id(0x00000003), helpstring("קבלת יצירות ופידיונות של קרנות נאמנות")]
+        HRESULT GetFundExecution(
+                        [in] long sessionId, 
+                        [in] int DateFrom, 
+                        [in] int DateTo, 
+                        [in] int BNO, 
+                        [out] SAFEARRAY(FundExecutionType)* RecordSet, 
+                        [out, retval] long* retVal);
+    };
+
+    typedef [uuid(4315A163-2DF4-4D42-9321-C99BD680117A), version(1.0), helpstring("Krn Type")]
+    struct tagKrnBizuimType {
+        [helpstring("סוג-רשומה")        
+]
+        BSTR SUGREC;
+        [helpstring("מספר חשבון")        
+]
+        BSTR BNO;
+        [helpstring("סטטוס נייר")        
+]
+        BSTR BNOSTS;
+        [helpstring("שלב הנייר")        
+]
+        BSTR SHKAV;
+        [helpstring("שם הנייר")        
+]
+        BSTR BnoName;
+        [helpstring("מספר חבר בורסה")        
+]
+        BSTR MBR;
+        [helpstring("שם חבר בורסה")        
+]
+        BSTR MBRNAME;
+        [helpstring("ע"נ של יצירות")        
+]
+        BSTR IZIROT;
+        [helpstring("מחיר נייר של יצירות")        
+]
+        BSTR IZIRAPRC;
+        [helpstring("ע"נ של פדיונות")        
+]
+        BSTR PIDYONOT;
+        [helpstring("מחיר נייר של פדיונות")        
+]
+        BSTR PIDYPRC;
+        [helpstring("מחיר יסודי")        
+]
+        BSTR BASICPRC;
+        [helpstring("שעת ביצוע")        
+]
+        BSTR TIME;
+        [helpstring("סה"כ")        
+]
+        BSTR TOTAL;
+        [helpstring("תאריך ערך")        
+]
+        BSTR DATE;
+    } KrnBizuimType;
+
+    typedef [uuid(0CAE5D87-2B25-4A58-80FA-FE4D43369DBD), version(1.0), helpstring("Keren Basic Type")]
+    struct tagKerenBasicType {
+        [helpstring("מספר קרן")        
+]
+        int BNO_Num;
+        [helpstring("סוג-רשומה")        
+]
+        int NV_LMT_ERR;
+        [helpstring("שם קרן")        
+]
+        BSTR BNO_NAME;
+        [helpstring("שם קרן 2")        
+]
+        BSTR BNO_NAME2;
+        [helpstring("שער בסיס")        
+]
+        double BASIS_RATE;
+        [helpstring("סוג-חומר")        
+]
+        BSTR SH;
+        [helpstring("שעת-סגירה")        
+]
+        BSTR CLOS_TM;
+        [helpstring("קרן דולרי")        
+]
+        BSTR DOLLAR_FUND;
+    } KerenBasicType;
+
+    typedef [uuid(C9B70EF7-3769-4AF4-8A2B-D8A437B47B8F), version(1.0), helpstring("Krn Type")]
+    struct tagFundExecutionType {
+        [helpstring("מספר נייר")        
+]
+        int BNO;
+        [helpstring("מספר חבר בורסה")        
+]
+        int MemberNo;
+        [helpstring("כמות קניה")        
+]
+        int NvBuy;
+        [helpstring("שווי קניה")        
+]
+        double VolBuy;
+        [helpstring("כמות מכירה")        
+]
+        int NvSell;
+        [helpstring("שווי מכירה")        
+]
+        double VolSell;
+        [helpstring("שלב מסחר")        
+]
+        BSTR TrdStage;
+        [helpstring("תאריך או שעה")        
+]
+        int DateTime;
+        [helpstring("שם חבר בורסה")        
+]
+        BSTR MemberName;
+        [helpstring("שם נייר ערך")        
+]
+        BSTR BnoName;
+        [helpstring("פדיונות")        
+]
+        double PricePDN;
+        [helpstring("יצירות")        
+]
+        double PriceIZR;
+        [helpstring("סהכ כמות")        
+]
+        int NvTotal;
+        [helpstring("סהכ שווי")        
+]
+        double VolTotal;
+    } FundExecutionType;
+
+    [
+      uuid(892C585B-5EA6-4EA0-A14A-E77588D75BDE),
+      helpstring("DirectDlv Class")
+    ]
+    coclass DirectDlv {
+        [default] interface IDirectDlv;
+    };
+
+    [
+      odl,
+      uuid(30F0C672-1CE7-4052-B913-A7BD947A4C8C),
+      helpstring("IDirectDlv Interface"),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface IDirectDlv : IDispatch {
+        [id(0x00000001), helpstring("method ExecDirect")]
+        HRESULT ExecDirect(
+                        [in] BSTR request, 
+                        [out] BSTR* response, 
+                        [in, optional, defaultvalue("")] BSTR separator, 
+                        [out, retval] long* retVal);
+        [id(0x00000002), helpstring("method ExecDirect using 4K request format")]
+        HRESULT ExecDirect4K(
+                        [in] BSTR request, 
+                        [out] BSTR* response, 
+                        [in, optional, defaultvalue("")] BSTR separator, 
+                        [out, retval] long* retVal);
+        [id(0x00000003), helpstring("method ExecDirect that returns safe array")]
+        HRESULT SafeExecDirect(
+                        [in] BSTR request, 
+                        [out] SAFEARRAY(BSTR)* response, 
+                        [out] long* errorCode, 
+                        [out] BSTR* ErrorMessage, 
+                        [in, optional, defaultvalue(0)] long Use4KRequest, 
+                        [out, retval] long* retVal);
+        [id(0x00000004), helpstring("method ExecDirect that returns safe array")]
+        HRESULT SafeExecDirect2(
+                        [in] long sessionId, 
+                        [in] BSTR request, 
+                        [out] SAFEARRAY(BSTR)* response, 
+                        [out] long* errorCode, 
+                        [out] BSTR* ErrorMessage, 
+                        [in, optional, defaultvalue(0)] long Use4KRequest, 
+                        [out, retval] long* retVal);
+        [id(0x00000005), helpstring("method ExecDirect that returns safe array")]
+        HRESULT SafeExecDirectJ(
+                        [in] long sessionId, 
+                        [in] BSTR request, 
+                        [out] SAFEARRAY(BSTR)* response, 
+                        [out] long* errorCode, 
+                        [out] BSTR* ErrorMessage, 
+                        [in, optional, defaultvalue(0)] long Use4KRequest, 
+                        [out, retval] long* retVal);
+    };
+
+    [
+      uuid(F19F7DC8-5195-4FEC-A074-54EC95756D02),
+      helpstring("TradeOptions Class")
+    ]
+    coclass TradeOptions {
+        [default] interface ITradeOptions;
+    };
+
+    [
+      odl,
+      uuid(14F44D18-F88D-4260-B843-22084A594345),
+      helpstring("ITradeOptions Interface"),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface ITradeOptions : IDispatch {
+        [id(0x00000001), helpstring("method BlackAndScholes")]
+        HRESULT BlackAndScholesEx(
+                        [in] long CallType, 
+                        [in] long nOptionsToExcersize, 
+                        [in] long nOptionsToBuy, 
+                        [in] double dIV, 
+                        [in] double dDividend, 
+                        [in] double dInterest, 
+                        [in] double dAssetPrice, 
+                        [in] double dStrikePrice, 
+                        [in] long nDaysToExpire, 
+                        [out] BSDerivativesType* Derivatives, 
+                        [out, retval] long* retVal);
+        [id(0x00000002), helpstring("get option record")]
+        HRESULT GetOptionByBno(
+                        [in] int BNO, 
+                        [out] ExtOptRecord* record, 
+                        [out, retval] long* retVal);
+        [id(0x00000003), helpstring("get options record for given base asset")]
+        HRESULT GetOptionByBaseAsset(
+                        [in] BaseAssetTypes BaseAsset, 
+                        [out] SAFEARRAY(ExtOptRecord)* records, 
+                        [in, optional, defaultvalue(-1)] MonthType Month, 
+                        [out, retval] long* retVal);
+        [id(0x00000004), helpstring("get options record for given strike")]
+        HRESULT GetOptionByStrike(
+                        [in] double dStrike, 
+                        [out] SAFEARRAY(ExtOptRecord)* records, 
+                        [in, optional, defaultvalue(-1)] BaseAssetTypes BaseAsset, 
+                        [in, optional, defaultvalue(-1)] MonthType Month, 
+                        [out, retval] long* retVal);
+    };
+
+    typedef [uuid(9EC172DF-5716-457D-B3AD-665558954DE9), version(1.0), helpstring("BlackAndScholes DERIVATIVES_PARAM Type")]
+    struct tagBSDerivativesType {
+                
+double dDeltaCall;
+                
+double dThetaCall;
+                
+double dVegaCall;
+                
+double dGammaCall;
+                
+double dPriceCall;
+                
+double dDeltaPut;
+                
+double dThetaPut;
+                
+double dVegaPut;
+                
+double dGammaPut;
+                
+double dPricePut;
+    } BSDerivativesType;
+
+    typedef [uuid(49B9AB93-F2B2-4E2B-996E-FB1FFEF2F44D), version(1.0), helpstring("External Option Record")]
+    struct tagExtOptRecord {
+        [helpstring("מספר נייר")        
+]
+        int BNO;
+        [helpstring("isin     ")        
+]
+        BSTR Isin;
+        [helpstring("נכס בסיס")        
+]
+        int BaseAsset;
+        [helpstring("מחיר מימוש")        
+]
+        double Strike;
+        [helpstring("ימים לפקיעה")        
+]
+        int DaysToExpiry;
+        [helpstring("חודש פקיעה")        
+]
+        int ExpMonth;
+        [helpstring("תאריך פקיעה")        
+]
+        BSTR ExpDate;
+        [helpstring("סוג אופציה")        
+]
+        int OptionType;
+        [helpstring("מכפיל")        
+]
+        double Mult;
+        [helpstring("מכפיל מדד")        
+]
+        double IndexMult;
+        [helpstring("מספר התאמות")        
+]
+        int NumberFit;
+    } ExtOptRecord;
+
+    [
+      uuid(24508459-6F88-45DA-A56A-C13A3224EC86),
+      helpstring("Config Class")
+    ]
+    coclass Config {
+        [default] interface IConfig;
+    };
+
+    [
+      odl,
+      uuid(24508459-ACFE-43F0-847B-03DC1A24AC28),
+      helpstring("IConfig Interface"),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface IConfig : IDispatch {
+        [id(0x00000001), propget, helpstring("מספר הלקוח")]
+        HRESULT Cust([out, retval] BSTR* pVal);
+        [id(0x00000002), propget, helpstring("שם המחשב המרכזי של אפ. אמ. אר")]
+        HRESULT System([out, retval] BSTR* pVal);
+        [id(0x00000003), propget, helpstring("מחזיר 1 אם התקשורת למחשב הראשי מוצפנת או 0 אם לא")]
+        HRESULT UsesEncryption([out, retval] long* res);
+        [id(0x00000004), propget, helpstring("שליפת מזהה")]
+        HRESULT sessionId([out, retval] long* res);
+        [id(0x00000004), propput, helpstring("שליפת מזהה")]
+        HRESULT sessionId([in] long res);
+        [id(0x00000005), helpstring("שליפת נתון עבור שדה קונפיגורציה ספציפי")]
+        HRESULT ConfigFieldQuery(
+                        [in] ConfigField FIELD, 
+                        [out, retval] BSTR* TBConfigReply);
+        [id(0x00000006), helpstring("שליפת כל נתוני הקונפיגורציה")]
+        HRESULT ConfigFieldAll(
+                        [in, out] SAFEARRAY(ConfigType)* pConfigRecords, 
+                        [out, retval] long* retVal);
+        [id(0x00000007), helpstring(" מקבל תאריך ושעה מדויקת מהמחשב הראשי, וגם את הזמן שלקח למידע להגיע-כלומר ההפרש בין השעה שנדגמה לשעה הנוכחית ")]
+        HRESULT GetAS400DateTime(
+                        [out] AS400DateTime* dateTimeStruct, 
+                        [out] long* latency, 
+                        [out, retval] long* retVal);
+    };
+
+    typedef [uuid(5F318EAA-968C-427B-8B09-50EA7FC572FE), version(1.0), helpstring("שדות קונפיגורציה")]
+    enum {
+        ConfigFieldCust = 1,
+        ConfigFieldSystem = 2,
+        ConfigFieldUsesEncryption = 3,
+        ConfigFieldVersion = 4,
+        ConfigFieldDataSource = 5,
+        ConfigFieldK300Ip = 6,
+        ConfigFieldOrdersIp = 7,
+        ConfigFieldTBLogDir = 8,
+        ConfigFieldTBLogFile = 9,
+        ConfigFieldAS400IP1 = 10,
+        ConfigFieldAS400IP2 = 11,
+        ConfigFieldConnectionTimeout = 12
+    } ConfigField;
+
+    typedef [uuid(2F0CE1AB-0793-4EB9-8B20-ED2195268681), version(1.0), helpstring("שדות קונפיגורציה")]
+    struct tagConfigType {
+        [helpstring("שדה מפתח")        
+]
+        ConfigField FIELD;
+        [helpstring("מספר תיק")        
+]
+        BSTR TBConfigReply;
+    } ConfigType;
+
+    typedef [uuid(C92AC032-EAF1-472C-8CAE-4BA5A648E6E8), version(1.0), helpstring("שדות תאריך ושעה")]
+    struct tagAS400DateTime {
+        [helpstring("שנה")        
+]
+        int year;
+        [helpstring("חודש")        
+]
+        int Month;
+        [helpstring("יום")        
+]
+        int day;
+        [helpstring("שעה")        
+]
+        int hour;
+        [helpstring("דקה")        
+]
+        int minute;
+        [helpstring("שניה")        
+]
+        int second;
+        [helpstring("אלפיות שניה")        
+]
+        int ms;
+    } AS400DateTime;
+
+    [
+      uuid(4EE19F38-3979-42C1-BE3A-968323DB1A70),
+      helpstring("_IK300EventsEvents Interface")
+    ]
+    dispinterface _IK300EventsEvents {
+        properties:
+        methods:
+            [id(0x00000001), helpstring("method OnMaof")]
+            HRESULT OnMaof([in] K300MaofType* data);
+            [id(0x00000002), helpstring("method OnRezef")]
+            HRESULT OnRezef([in] K300RzfType* data);
+            [id(0x00000003), helpstring("method OnMadad")]
+            HRESULT OnMadad([in] K300MadadType* data);
+    };
+
+    [
+      uuid(6E3DF86A-AB50-4BCD-A3E0-C4A35A358F13),
+      helpstring("K300Events Class")
+    ]
+    coclass K300Events {
+        [default] interface IK300Events;
+        [default, source] dispinterface _IK300EventsEvents;
+    };
+
+    [
+      odl,
+      uuid(A271F002-AD1E-4F27-B86F-8A4F49B92A8A),
+      helpstring("IK300Events Interface"),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface IK300Events : IDispatch {
+        [id(0x00000001), propget]
+        HRESULT EventsFilterBaseAsset([out, retval] BaseAssetTypes* pVal);
+        [id(0x00000001), propput]
+        HRESULT EventsFilterBaseAsset([in] BaseAssetTypes pVal);
+        [id(0x00000002), propget]
+        HRESULT EventsFilterMonth([out, retval] MonthType* pVal);
+        [id(0x00000002), propput]
+        HRESULT EventsFilterMonth([in] MonthType pVal);
+        [id(0x00000003), propget]
+        HRESULT EventsFilterBno([out, retval] long* pVal);
+        [id(0x00000003), propput]
+        HRESULT EventsFilterBno([in] long pVal);
+        [id(0x00000004), propget]
+        HRESULT EventsFilterMaof([out, retval] long* pVal);
+        [id(0x00000004), propput]
+        HRESULT EventsFilterMaof([in] long pVal);
+        [id(0x00000005), propget]
+        HRESULT EventsFilterRezef([out, retval] long* pVal);
+        [id(0x00000005), propput]
+        HRESULT EventsFilterRezef([in] long pVal);
+        [id(0x00000006), propget]
+        HRESULT EventsFilterMadad([out, retval] long* pVal);
+        [id(0x00000006), propput]
+        HRESULT EventsFilterMadad([in] long pVal);
+        [id(0x00000007), propget]
+        HRESULT EventsFilterStockKind([out, retval] StockKind* pVal);
+        [id(0x00000007), propput]
+        HRESULT EventsFilterStockKind([in] StockKind pVal);
+        [id(0x00000008), propget]
+        HRESULT EventsFilterStockMadad([out, retval] MadadTypes* pVal);
+        [id(0x00000008), propput]
+        HRESULT EventsFilterStockMadad([in] MadadTypes pVal);
+    };
+
+    [
+      uuid(24508459-475B-4DAC-BE6E-328D24844520),
+      helpstring("Permissions Class")
+    ]
+    coclass Permissions {
+        [default] interface IPermissions;
+    };
+
+    [
+      odl,
+      uuid(24508459-7E53-43F2-B7AD-199DAFFE5163),
+      helpstring("IPermissions Interface"),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface IPermissions : IDispatch {
+        [id(0x00000001), helpstring(".רשימת הרשאות של המשתמש")]
+        HRESULT GetUserPermissions(
+                        [in] long sessionId, 
+                        [out] SAFEARRAY(UserPasswordType)* psaStrRecords, 
+                        [in, optional, defaultvalue(0)] long ReloadPermissions, 
+                        [out, retval] long* retVal);
+        [id(0x00000002), helpstring("רשימת אפליקציות המותרות למשתמש")]
+        HRESULT GetUserApp(
+                        [in] long sessionId, 
+                        [out] SAFEARRAY(BSTR)* psaStrRecords, 
+                        [in, optional, defaultvalue("")] BSTR AppName, 
+                        [out, retval] long* retVal);
+        [id(0x00000003), helpstring("שולף את הרשאות המשתמש מחדש מהמחשב הראשי. מחזיר 0 בהצלחה")]
+        HRESULT RefreshUserPermissions(
+                        [in] long sessionId, 
+                        [out, retval] long* retVal);
+    };
+
+    [
+      uuid(B7E9E5CD-CBF0-4D9C-8C48-8C8FFB6466E8),
+      helpstring("_IK300EventsEvents Interface")
+    ]
+    dispinterface IOnlineEventsEvents {
+        properties:
+        methods:
+            [id(0x00000001), helpstring("method OnOnlineKeren")]
+            HRESULT OnOnlineKeren([in] SAFEARRAY(OnlineSessionBalance)* psaStrRecords);
+    };
+
+    [
+      uuid(6D63B490-5C90-4F3C-A518-3241F3C833F1),
+      helpstring("OnlineEvents Class")
+    ]
+    coclass OnlineEvents {
+        [default] interface IOnlineEvents;
+        [default, source] dispinterface IOnlineEventsEvents;
+    };
+
+    [
+      odl,
+      uuid(622ECF94-4A34-48A3-8B05-C1120ECD7144),
+      helpstring("IOnlineEvents Interface"),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface IOnlineEvents : IDispatch {
+        [id(0x00000001), propget]
+        HRESULT EventsFilterKrn([out, retval] long* pVal);
+        [id(0x00000001), propput]
+        HRESULT EventsFilterKrn([in] long pVal);
+        [id(0x00000002), propget]
+        HRESULT EventsFilterAccount([out, retval] long* pAccVal);
+        [id(0x00000002), propput]
+        HRESULT EventsFilterAccount([in] long pAccVal);
+        [id(0x00000003), propget]
+        HRESULT EventsFilterBranch([out, retval] long* brVal);
+        [id(0x00000003), propput]
+        HRESULT EventsFilterBranch([in] long brVal);
+        [id(0x00000004), propget]
+        HRESULT EventsFilterCustodian([out, retval] long* pVal);
+        [id(0x00000004), propput]
+        HRESULT EventsFilterCustodian([in] long pVal);
+        [id(0x00000005), propget]
+        HRESULT EventsFilterKupa([out, retval] long* pVal);
+        [id(0x00000005), propput]
+        HRESULT EventsFilterKupa([in] long pVal);
+        [id(0x00000006), propget]
+        HRESULT EventsFilterRegAccount([out, retval] long* pVal);
+        [id(0x00000006), propput]
+        HRESULT EventsFilterRegAccount([in] long pVal);
+    };
+};
+</pre>
+
